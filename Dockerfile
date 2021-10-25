@@ -1,7 +1,14 @@
 # FROM alpine:latest
 FROM openresty/openresty:alpine
 
-LABEL author="wilhelm@devilmayco.de"
+LABEL org.opencontainers.image.title       "chamber"
+LABEL org.opencontainers.image.description "An OpenResty-based echo server."
+LABEL org.opencontainers.image.licenses    "The Unlicense"
+LABEL org.opencontainers.image.authors     "wilhelm@devilmayco.de"
+LABEL org.opencontainers.image.source      "https://github.com/wilhelm-murdoch/chamber"
+LABEL org.opencontainers.image.url         "https://github.com/wilhelm-murdoch/chamber"
+LABEL org.opencontainers.image.docs        "https://github.com/wilhelm-murdoch/chamber/blob/main/README.md"
+LABEL org.opencontainers.image.version     "latest"
 
 WORKDIR /etc/nginx
 
