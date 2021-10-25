@@ -4,6 +4,30 @@
 
 Another echo server, but exclusively-using [OpenResty](https://openresty.org/) with built-in Lua support!
 
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [General Endpoints](#general-endpoints)
+    - [`location /`](#location-)
+    - [`location /up`](#location-up)
+    - [`location /status`](#location-status)
+    - [`location /now`](#location-now)
+    - [`location /hostname`](#location-hostname)
+    - [`location /docs`](#location-docs)
+    - [`location /auth`](#location-auth)
+  - [Testing HTTP Response Codes](#testing-http-response-codes)
+  - [Debugging Requests](#debugging-requests)
+    - [`location /echo`](#location-echo)
+    - [`location /headers`](#location-headers)
+    - [`location /params/post`](#location-paramspost)
+    - [`location /params/get`](#location-paramsget)
+  - [Testing Latency](#testing-latency)
+  - [Testing Download Size](#testing-download-size)
+- [Building & Contributing](#building--contributing)
+  - [For Maintainers](#for-maintainers)
+- [License](#license)
+
 ## Installation
 
 Currently, this project can only be started using [Docker](). Ensure your local daemon is running and execute the following command in your terminal:
