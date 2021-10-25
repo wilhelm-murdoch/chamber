@@ -1,3 +1,3 @@
-![alt text](chamber.gif "Logo Title Text 1")
+<img src="chamber.gif" alt="drawing" style="width: 100%;" />
 
 An OpenResty-based echo server.
