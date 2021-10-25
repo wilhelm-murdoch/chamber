@@ -1,6 +1,9 @@
 # FROM alpine:latest
 FROM openresty/openresty:alpine
 
+RUN    apk -Uuv add apache2-utils \
+    && rm /var/cache/apk/*
+
 LABEL org.opencontainers.image.title       "chamber"
 LABEL org.opencontainers.image.description "An OpenResty-based echo server."
 LABEL org.opencontainers.image.licenses    "The Unlicense"
@@ -19,5 +22,11 @@ ADD config/openresty/chamber.conf /etc/nginx/conf.d/chamber.conf
 ADD config/openresty/nginx.conf   /etc/nginx/nginx.conf
 ADD config/sysctl.conf            /etc/sysctl.conf
 ADD config/limits.conf            /etc/security/limits.conf
+ADD entrypoint.sh                 /entrypoint.sh
+
+ARG GIT_SHA
+RUN echo "chamber release: ${GIT_SHA}" > /.git_sha
 
 EXPOSE 8000
+
+ENTRYPOINT [ "/entrypoint.sh" ]
