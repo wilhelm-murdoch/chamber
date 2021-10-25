@@ -50,4 +50,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GIT_SHA=${{ steps.vars.outputs.sha_short }}
+            GIT_SHA=${{ steps.vars.outputs.git_sha }}
