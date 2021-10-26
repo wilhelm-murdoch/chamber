@@ -6,9 +6,11 @@ An [OpenResty](https://openresty.org/)-based echo server.
 
 ## Contents
 
+- [Contents](#contents)
 - [Installation](#installation)
 - [Usage](#usage)
   - [General Endpoints](#general-endpoints)
+    - [`location /hello-world`](#location-hello-world)
     - [`location /`](#location-)
     - [`location /up`](#location-up)
     - [`location /status`](#location-status)
@@ -51,6 +53,44 @@ You should now be able to open a browser and point it to http://localhost:8000 t
 ## Usage
 
 ### General Endpoints
+
+#### `location /hello-world`
+
+Returns a text response for "Hello, world!" in all google-supported languages:
+```bash
+$ for i in {1..100}; do curl http://localhost:8000/hello-world; done
+Ahoj svete!
+你好，世界！
+Გამარჯობა მსოფლიო!
+Გამარჯობა მსოფლიო!
+Сәлем Әлем!
+Pozdravljen, svet!
+ନମସ୍କାର ବିଶ୍ୱବାସି!
+Გამარჯობა მსოფლიო!
+Salamu, Dunia!
+Hej världen!
+Halló heimur!
+Selam Dünya!
+Pozdravljen, svet!
+Здраво свету!
+Pozdravljen, svet!
+Hello Wêreld!
+Здраво свету!
+హలో వరల్డ్!
+Γειά σου Κόσμε!
+Salve mundus!
+नमस्कार जग!
+Aloha, honua!
+Dia duit, a shaoghail!
+హలో వరల్డ్!
+Selam Dünya!
+Hello Wêreld!
+Hallo wrâld!
+Բարեւ աշխարհ!
+Dia duit, a shaoghail!
+... heaps of other languages, bro ...
+ສະບາຍດີຊາວໂລກ!
+```
 
 #### `location /`
 
