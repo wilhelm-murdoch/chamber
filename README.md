@@ -2,11 +2,10 @@
 
 [![Docker](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml)
 
-Another echo server written using [OpenResty](https://openresty.org/)!
+An [OpenResty](https://openresty.org/)-based echo server.
 
 ## Contents
 
-- [Contents](#contents)
 - [Installation](#installation)
 - [Usage](#usage)
   - [General Endpoints](#general-endpoints)
