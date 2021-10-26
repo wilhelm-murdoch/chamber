@@ -2,7 +2,7 @@
 
 [![Docker](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml)
 
-Another echo server, but exclusively-using [OpenResty](https://openresty.org/) with built-in Lua support!
+Another echo server written using [OpenResty](https://openresty.org/)!
 
 ## Contents
 
@@ -18,23 +18,23 @@ Another echo server, but exclusively-using [OpenResty](https://openresty.org/) w
     - [`location /docs`](#location-docs)
     - [`location /auth`](#location-auth)
     - [`location /rate-limit`](#location-rate-limit)
-  - [Testing HTTP Response Codes](#testing-http-response-codes)
+  - [HTTP Response Codes](#http-response-codes)
   - [Debugging Requests](#debugging-requests)
     - [`location /echo`](#location-echo)
     - [`location /headers`](#location-headers)
     - [`location /params/post`](#location-paramspost)
     - [`location /params/get`](#location-paramsget)
-  - [Testing Latency](#testing-latency)
+  - [Latency](#latency)
     - [`location /latency/degrading`](#location-latencydegrading)
     - [`location /latency/erratic`](#location-latencyerratic)
-  - [Testing Download Size](#testing-download-size)
+  - [Response Size](#response-size)
 - [Building & Contributing](#building--contributing)
   - [For Maintainers](#for-maintainers)
 - [License](#license)
 
 ## Installation
 
-Currently, this project can only be started using [Docker](). Ensure your local daemon is running and execute the following command in your terminal:
+Docker is the only hard requirement for this project. With a bit of mucking about, you can get this running without a container. However, only Docker usage is supported at the moment. Ensure your local daemon is running and execute the following command in your terminal:
 
 ```bash
 $ docker run -it --rm --name chamber -p 8000:8000 ghcr.io/wilhelm-murdoch/chamber:latest
@@ -105,7 +105,7 @@ You can read more about what this information means [here](http://nginx.org/en/d
 
 #### `location /now`
 
-Returns a JSON response containing a Unix timestamp:
+Returns a JSON response containing a current Unix timestamp:
 
 ```bash
 $ curl -i http://localhost:8000/now
@@ -114,7 +114,7 @@ Date: Mon, 25 Oct 2021 15:02:45 GMT
 Content-Type: application/json
 Connection: close
 
-{"now": "1635174165.878"}
+{"now": 1635174165.878}
 ```
 
 #### `location /hostname`
@@ -130,6 +130,8 @@ Connection: close
 
 {"hostname": "localhost"}
 ```
+
+This will almost always return `localhost` unless you're running outside of a container.
 
 #### `location /docs`
 
@@ -185,7 +187,7 @@ $ docker run -it --rm \
     ghcr.io/wilhelm-murdoch/chamber:latest
 ```
 
-These will be picked up just before starting OpenResty and will be temporarily stored in `/etc/nginx/.htpasswd`.
+These will be picked up just before starting OpenResty and will be temporarily stored in `/etc/nginx/.htpasswd`. Restarting the container without these variables will restore this file to its default state.
 
 #### `location /rate-limit`
 
@@ -247,9 +249,9 @@ A `HTTP/1.1 503 Service Unavailable` is the standard response to passing a thres
 172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] "GET /rate-limit HTTP/1.1" 503 194 "-" "Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1"
 ```
 
-### Testing HTTP Response Codes
+### HTTP Response Codes
 
-All current HTTP response codes listed on [this Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) page are currently supported. You may cycle through all codes by hitting the `/code/$http_response_code` URL format. For example, the following endpoints will return the associated response code:
+All HTTP response codes listed on [this Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) page are supported. You may cycle through all codes by using the `/code/$http_response_code` URL format. For example, the following endpoints will return the associated response code:
 
 1. `location /code/201` responds with `HTTP/1.1 201 Created`.
 2. `location /code/405` response with `HTTP/1.1 405 Method Not Allowed`.
@@ -266,7 +268,7 @@ Content-Length: 212
 Connection: keep-alive
 ```
 
-These endpoints will return a JSON response similar to the following:
+You will also be provided with a JSON response similar to the following:
 
 ```json
 {
@@ -329,9 +331,59 @@ Connection: close
 
 #### `location /params/post`
 
+Accepts only `POST` requests and will respond with a JSON object representing the parsed request body:
+
+```bash
+$ curl -s -X POST http://localhost:8000/params/post --data "foo=derp&bar=merp&baz=fizz&baz=buzz" | jq -r
+[
+  {
+    "key": "foo",
+    "value": "derp"
+  },
+  {
+    "key": "baz",
+    "value": [
+      "fizz",
+      "buzz"
+    ]
+  },
+  {
+    "key": "bar",
+    "value": "merp"
+  }
+]
+```
+
+Multiple values assigned to the same key will be represented as a list of values.
+
 #### `location /params/get`
 
-### Testing Latency
+Responds with a JSON object representing the specified URI parameters:
+
+```bash
+$ curl -s "http://localhost:8000/params/get?foo=derp&bar=merp&baz=fizz&baz=buzz" | jq -r
+[
+  {
+    "key": "foo",
+    "value": "derp"
+  },
+  {
+    "key": "baz",
+    "value": [
+      "fizz",
+      "buzz"
+    ]
+  },
+  {
+    "key": "bar",
+    "value": "merp"
+  }
+]
+```
+
+Multiple values assigned to the same key will be represented as a list of values.
+
+### Latency
 
 The following endpoints are used for testing long-running requests:
 
@@ -343,7 +395,7 @@ All endpoints in this namespace will return the following JSON response containi
 
 ```bash
 $ curl http://localhost:8000/slow
-{"elapsed": "4.975"}
+{"elapsed": 4.975}
 ```
 
 #### `location /latency/degrading`
@@ -399,21 +451,21 @@ $ curl http://localhost:8000/latency/erratic
 {"elapsed": 1.920}
 ```
 
-### Testing Download Size
+### Response Size
 
 The following endpoints are used for testing response bodies of various sizes:
 
-1. `location /body/smallest`: `echo` repeated `150` times.
-2. `location /body/small`: `echo` repeated `1,500` times.
-3. `location /body/medium`: `echo` repeated `15,000` times.
-4. `location /body/large`: `echo` repeated `150,000` times.
-5. `location /body/larger`: `echo` repeated `1,500,000` times.
-6. `location /body/largest`: `echo` repeated `15,000,000` times.
+1. `location /size/smallest`: `echo` repeated `150` times.
+2. `location /size/small`: `echo` repeated `1,500` times.
+3. `location /size/medium`: `echo` repeated `15,000` times.
+4. `location /size/large`: `echo` repeated `150,000` times.
+5. `location /size/larger`: `echo` repeated `1,500,000` times.
+6. `location /size/largest`: `echo` repeated `15,000,000` times.
 
 These endpoints will return the following type of response:
 
 ```bash
-$  curl -i http://localhost:8000/body/smallest
+$  curl -i http://localhost:8000/size/smallest
 HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 15:10:44 GMT
 Content-Type: text/html
