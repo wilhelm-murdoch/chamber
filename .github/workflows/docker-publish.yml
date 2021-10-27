@@ -3,7 +3,10 @@ name: Docker
 on:
   push:
     branches: [ main ]
-    tags: [ latest ]
+    paths: 
+      - Dockerfile
+      - entrypoint.sh
+      - config/**
   pull_request:
     branches: [ main ]
 
