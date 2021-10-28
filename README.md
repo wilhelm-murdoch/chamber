@@ -2,7 +2,7 @@
 
 [![Docker](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/wilhelm-murdoch/chamber/actions/workflows/docker-publish.yml)
 
-An [OpenResty](https://openresty.org/)-based echo server.
+An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP client testing.
 
 ## Contents
 
