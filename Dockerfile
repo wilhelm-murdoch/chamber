@@ -1,4 +1,3 @@
-# FROM alpine:latest
 FROM openresty/openresty:alpine
 
 RUN    apk -Uuv add apache2-utils \
