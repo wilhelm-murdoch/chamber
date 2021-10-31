@@ -10,7 +10,6 @@ An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP clie
 - [Installation](#installation)
 - [Usage](#usage)
   - [General Endpoints](#general-endpoints)
-    - [`location /hello-world`](#location-hello-world)
     - [`location /`](#location-)
     - [`location /up`](#location-up)
     - [`location /status`](#location-status)
@@ -18,6 +17,7 @@ An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP clie
     - [`location /hostname`](#location-hostname)
     - [`location /docs`](#location-docs)
     - [`location /auth`](#location-auth)
+    - [`location /hello-world`](#location-hello-world)
     - [`location /rate-limit`](#location-rate-limit)
   - [HTTP Response Codes](#http-response-codes)
   - [Debugging Requests](#debugging-requests)
@@ -57,44 +57,6 @@ You should now be able to open a browser and point it to http://localhost:8000 t
 ## Usage
 
 ### General Endpoints
-
-#### `location /hello-world`
-
-Returns a text response for "Hello, world!" in all google-supported languages:
-```bash
-$ for i in {1..100}; do curl http://localhost:8000/hello-world; done
-Ahoj svete!
-你好，世界！
-Გამარჯობა მსოფლიო!
-Გამარჯობა მსოფლიო!
-Сәлем Әлем!
-Pozdravljen, svet!
-ନମସ୍କାର ବିଶ୍ୱବାସି!
-Გამარჯობა მსოფლიო!
-Salamu, Dunia!
-Hej världen!
-Halló heimur!
-Selam Dünya!
-Pozdravljen, svet!
-Здраво свету!
-Pozdravljen, svet!
-Hello Wêreld!
-Здраво свету!
-హలో వరల్డ్!
-Γειά σου Κόσμε!
-Salve mundus!
-नमस्कार जग!
-Aloha, honua!
-Dia duit, a shaoghail!
-హలో వరల్డ్!
-Selam Dünya!
-Hello Wêreld!
-Hallo wrâld!
-Բարեւ աշխարհ!
-Dia duit, a shaoghail!
-... heaps of other languages, bro ...
-ສະບາຍດີຊາວໂລກ!
-```
 
 #### `location /`
 
@@ -138,10 +100,14 @@ Content-Type: text/plain
 Content-Length: 100
 Connection: keep-alive
 
-Active connections: 1
-server accepts handled requests
- 13 13 13
-Reading: 0 Writing: 1 Waiting: 0
+{
+  "connection": 14078,
+  "connection_requests": 1,
+  "connections_active": 1,
+  "connections_reading": 0,
+  "connections_writing": 1,
+  "connections_waiting": 0
+}
 ```
 
 You can read more about what this information means [here](http://nginx.org/en/docs/http/ngx_http_stub_status_module.html#stub_status).
@@ -231,6 +197,44 @@ $ docker run -it --rm \
 ```
 
 These will be picked up just before starting OpenResty and will be temporarily stored in `/etc/nginx/.htpasswd`. Restarting the container without these variables will restore this file to its default state.
+
+#### `location /hello-world`
+
+Returns a text response for "Hello, world!" in all google-supported languages:
+```bash
+$ for i in {1..100}; do curl http://localhost:8000/hello-world; done
+Ahoj svete!
+你好，世界！
+Გამარჯობა მსოფლიო!
+Გამარჯობა მსოფლიო!
+Сәлем Әлем!
+Pozdravljen, svet!
+ନମସ୍କାର ବିଶ୍ୱବାସି!
+Გამარჯობა მსოფლიო!
+Salamu, Dunia!
+Hej världen!
+Halló heimur!
+Selam Dünya!
+Pozdravljen, svet!
+Здраво свету!
+Pozdravljen, svet!
+Hello Wêreld!
+Здраво свету!
+హలో వరల్డ్!
+Γειά σου Κόσμε!
+Salve mundus!
+नमस्कार जग!
+Aloha, honua!
+Dia duit, a shaoghail!
+హలో వరల్డ్!
+Selam Dünya!
+Hello Wêreld!
+Hallo wrâld!
+Բարեւ աշխարհ!
+Dia duit, a shaoghail!
+... heaps of other languages, bro ...
+ສະບາຍດີຊາວໂລກ!
+```
 
 #### `location /rate-limit`
 
