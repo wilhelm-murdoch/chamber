@@ -6,11 +6,11 @@ An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP clie
 
 ## Contents
 
-- [Contents](#contents)
 - [Installation](#installation)
 - [Usage](#usage)
   - [General Endpoints](#general-endpoints)
     - [`location /`](#location-)
+    - [`location /echo`](#location-echo)
     - [`location /up`](#location-up)
     - [`location /status`](#location-status)
     - [`location /now`](#location-now)
@@ -20,11 +20,6 @@ An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP clie
     - [`location /hello-world`](#location-hello-world)
     - [`location /rate-limit`](#location-rate-limit)
   - [HTTP Response Codes](#http-response-codes)
-  - [Debugging Requests](#debugging-requests)
-    - [`location /echo`](#location-echo)
-    - [`location /headers`](#location-headers)
-    - [`location /params/post`](#location-paramspost)
-    - [`location /params/get`](#location-paramsget)
   - [Latency](#latency)
     - [`location /latency/degrading`](#location-latencydegrading)
     - [`location /latency/erratic`](#location-latencyerratic)
@@ -68,6 +63,91 @@ HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 14:36:50 GMT
 Content-Type: text/html
 Connection: keep-alive
+```
+
+#### `location /echo`
+
+Will return a JSON object containing the following values:
+
+1. Request headers.
+2. Any `GET` parameters.
+3. Any `POST` parameters.
+4. The raw `POST` body, if present.
+
+```bash
+$ curl -i http://localhost:8000/echo?param=foo&param=bar&merp&flakes=meep --data "email=me@mysite.com&password=***"
+HTTP/1.1 200 OK
+Date: Mon, 25 Oct 2021 14:56:43 GMT
+Content-Type: text/html
+Connection: close
+
+{
+  "headers": [
+    {
+      "key": "USER-AGENT",
+      "value": "curl/7.64.1"
+    },
+    {
+      "key": "ACCEPT",
+      "value": "*/*"
+    },
+    {
+      "key": "CONTENT-LENGTH",
+      "value": "32"
+    },
+    {
+      "key": "CONTENT-TYPE",
+      "value": "application/x-www-form-urlencoded"
+    },
+    {
+      "key": "HOST",
+      "value": "localhost:8000"
+    }
+  ],
+  "params": {
+    "get": [
+      [
+        {
+          "key": "merp",
+          "value": "true"
+        },
+        {
+          "key": "param",
+          "value": [
+            "foo",
+            "bar"
+          ]
+        },
+        {
+          "key": "flakes",
+          "value": "meep"
+        }
+      ]
+    ],
+    "post": [
+      [
+        {
+          "key": "email",
+          "value": "me@mysite.com"
+        },
+        {
+          "key": "password",
+          "value": "***"
+        }
+      ]
+    ]
+  },
+  "body": "email=me@mysite.com&password=***"
+}
+```
+
+For `GET` and `POST` requests, multiple values assigned to the same key will be represented as a list of values.
+
+If you wish to tell the server to echo back a string, you can do something like the following:
+
+```bash
+$ curl -s http://localhost:8000/echo --data 'Hello, world!' | jq -r '.body'
+Hello, world!
 ```
 
 #### `location /up`
@@ -205,31 +285,7 @@ Returns a text response for "Hello, world!" in all google-supported languages:
 $ for i in {1..100}; do curl http://localhost:8000/hello-world; done
 Ahoj svete!
 你好，世界！
-Გამარჯობა მსოფლიო!
-Გამარჯობა მსოფლიო!
-Сәлем Әлем!
-Pozdravljen, svet!
-ନମସ୍କାର ବିଶ୍ୱବାସି!
-Გამარჯობა მსოფლიო!
-Salamu, Dunia!
-Hej världen!
-Halló heimur!
-Selam Dünya!
-Pozdravljen, svet!
-Здраво свету!
-Pozdravljen, svet!
-Hello Wêreld!
-Здраво свету!
-హలో వరల్డ్!
-Γειά σου Κόσμε!
-Salve mundus!
-नमस्कार जग!
-Aloha, honua!
-Dia duit, a shaoghail!
-హలో వరల్డ్!
-Selam Dünya!
-Hello Wêreld!
-Hallo wrâld!
+Hello, World!
 Բարեւ աշխարհ!
 Dia duit, a shaoghail!
 ... heaps of other languages, bro ...
@@ -324,111 +380,6 @@ You will also be provided with a JSON response similar to the following:
   "description": "A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource."
 }
 ```
-
-### Debugging Requests
-
-#### `location /echo`
-
-Any content added to the `?body=` parameter will be also be the body of the response:
-
-```bash
-$ curl -i http://localhost:8000/echo?body=Abandon%20all%20hope%2C%20ye%20who%20enter.
-HTTP/1.1 200 OK
-Date: Mon, 25 Oct 2021 14:56:43 GMT
-Content-Type: text/html
-Connection: close
-
-Abandon all hope, ye who enter here.
-```
-
-#### `location /headers`
-
-Returns a list of objects containing key + value pairs representing all accepted request headers:
-
-```bash
-$ curl -i http://localhost:8000/headers
-HTTP/1.1 200 OK
-Date: Mon, 25 Oct 2021 15:01:29 GMT
-Content-Type: application/json
-Connection: close
-
-[
-    {
-        "key": "ACCEPT-LANGUAGE",
-        "value": "en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7"
-    },
-    {
-        "key": "HOST",
-        "value": "localhost:8000"
-    },
-    {
-        "key": "CACHE-CONTROL",
-        "value": "max-age=0"
-    },
-    {
-        "key": "CONNECTION",
-        "value": "keep-alive"
-    },
-    {
-        "key": "ACCEPT-ENCODING",
-        "value": "gzip, deflate, br"
-    }
-]
-```
-
-#### `location /params/post`
-
-Accepts only `POST` requests and will respond with a JSON object representing the parsed request body:
-
-```bash
-$ curl -s -X POST http://localhost:8000/params/post --data "foo=derp&bar=merp&baz=fizz&baz=buzz" | jq -r
-[
-  {
-    "key": "foo",
-    "value": "derp"
-  },
-  {
-    "key": "baz",
-    "value": [
-      "fizz",
-      "buzz"
-    ]
-  },
-  {
-    "key": "bar",
-    "value": "merp"
-  }
-]
-```
-
-Multiple values assigned to the same key will be represented as a list of values.
-
-#### `location /params/get`
-
-Responds with a JSON object representing the specified URI parameters:
-
-```bash
-$ curl -s "http://localhost:8000/params/get?foo=derp&bar=merp&baz=fizz&baz=buzz" | jq -r
-[
-  {
-    "key": "foo",
-    "value": "derp"
-  },
-  {
-    "key": "baz",
-    "value": [
-      "fizz",
-      "buzz"
-    ]
-  },
-  {
-    "key": "bar",
-    "value": "merp"
-  }
-]
-```
-
-Multiple values assigned to the same key will be represented as a list of values.
 
 ### Latency
 
