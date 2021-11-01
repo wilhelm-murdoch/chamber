@@ -8,6 +8,7 @@ on:
       - Dockerfile
       - entrypoint.sh
       - config/**
+      - '!sub-project/docs/**'
 
 env:
   REGISTRY: ghcr.io
