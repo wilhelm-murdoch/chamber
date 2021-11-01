@@ -8,7 +8,7 @@ branding:
   label: v1.10
 
 meta:
-  title: " | Retype - Generate publish and share documentation"
+  title: " | Chamber - An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP client testing."
 
 edit:
   repo: github.com/wilhelm-murdoch/chamber
