@@ -106,35 +106,31 @@ Connection: close
   ],
   "params": {
     "get": [
-      [
-        {
-          "key": "merp",
-          "value": "true"
-        },
-        {
-          "key": "param",
-          "value": [
-            "foo",
-            "bar"
-          ]
-        },
-        {
-          "key": "flakes",
-          "value": "meep"
-        }
-      ]
+      {
+        "key": "merp",
+        "value": "true"
+      },
+      {
+        "key": "param",
+        "value": [
+          "foo",
+          "bar"
+        ]
+      },
+      {
+        "key": "flakes",
+        "value": "meep"
+      }
     ],
     "post": [
-      [
-        {
-          "key": "email",
-          "value": "me@mysite.com"
-        },
-        {
-          "key": "password",
-          "value": "***"
-        }
-      ]
+      {
+        "key": "email",
+        "value": "me@mysite.com"
+      },
+      {
+        "key": "password",
+        "value": "***"
+      }
     ]
   },
   "body": "email=me@mysite.com&password=***"
