@@ -48,7 +48,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: wilhelm-murdoch/chamber:latest
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/chamber:latest
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             GIT_SHA=${{ steps.vars.outputs.git_sha }}
