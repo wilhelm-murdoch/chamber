@@ -40,7 +40,7 @@ Once installed, you should be able to perform the following simulation.
 ```bash # Run this test once for 150 concurrent users.
 siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading
 ```
-+++ Response
++++ Results
 ```bash # The final siege report.
 ** SIEGE 4.1.1
 ** Preparing 150 concurrent users for battle.
