@@ -1,22 +1,21 @@
 ---
 order: 100
-icon: people
-label: Maintainers
+icon: terminal  
+label: Development
 ---
 > Contributions are always welcome. Just create a PR and remember to be nice.
 
 Perform the following steps from the root of this repository's local working copy to build and run the server image locally:
 
 ```bash
-$ git@github.com:wilhelm-murdoch/chamber.git
-$ cd chamber/
-$ docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . 
+git@github.com:wilhelm-murdoch/chamber.git
+cd chamber/
+docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . 
 ```
 
-`GIT_SHA`: We generate this release identifier with `$(git rev-parse --short=8 HEAD)` and build it into the image itself. This is where we source the content of the `/up` endpoint.
+`GIT_SHA`: We generate this release identifier with `$(git rev-parse --short=8 HEAD)` and build it into the image itself. This is where we source the content of the `/up` endpoint
 
-
-### Development Loop
+### Loop
 
 If I find myself making changes to the `chamber.conf` file, I like to see these changes immediately. Invoking `docker build ...` and `docker run ...` with every incremental change can be tedious. So, I cheat by using the following loop:
 
@@ -54,7 +53,7 @@ $ watch -n 1 -c 'curl -s localhost:8000/my/new/endpoint'
 
 These 3 steps allow me to see my changes almost immediately without leaving my editor.
 
-### For Maintainers
+### Maintainers
 
 This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you're a maintainer of this project, you can bypass this process with the following steps:
 

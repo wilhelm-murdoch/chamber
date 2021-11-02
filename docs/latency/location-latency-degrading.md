@@ -3,10 +3,45 @@ order: 100
 icon: code
 label: /latency/degrading
 ---
-Response times will increase with the overall active connection count. This can be tested with the following `siege` command:
 
-```bash
-$ siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading
+## Demonstration
+
+Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response.
+
++++ Command
+```bash # Respond with JSON:
+curl -s http://localhost:8000/latency/degrading | jq -r '.'
+```
+```bash # Respond with headers:
+curl -I http://localhost:8000/latency/degrading
+```
++++ Headers
+``` #
+HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive
+```
++++ JSON
+```json # The duration of the request.
+{
+  "elapsed": 1.101
+}
+```
++++ 
+
+## Simulating Load
+
+Simulating high traffic can be difficult to do manually. Luckily, there are plenty of tools out there to assist. `siege` is one of the more popular options. Installation instructions are a bit out of scope for this document, but there is broad support for it on most operating systems. You can read more about it [here](https://github.com/JoeDog/siege).
+
+Once installed, you should be able to perform the following simulation.
+
++++ Command
+```bash # Run this test once for 150 concurrent users.
+siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading
+```
++++ Response
+```bash # The final siege report.
 ** SIEGE 4.1.1
 ** Preparing 150 concurrent users for battle.
 The server is now under siege...
@@ -40,3 +75,10 @@ Failed transactions:	           0
 Longest transaction:	       16.16
 Shortest transaction:	        1.31
 ```
++++ 
+
+## Nginx Directive
+
+This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration [here](https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf).
+
+:::code source="../../config/openresty/conf.d/chamber.conf" title="config/openresty/conf.d/chamber.conf" region="/latency/degrading" :::
