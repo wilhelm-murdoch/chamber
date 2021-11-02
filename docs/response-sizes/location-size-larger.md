@@ -23,10 +23,8 @@ Content-Type: application/json
 Connection: keep-alive
 ```
 +++ Response
-```json # The duration of the request.
-{
-  "elapsed": 20.12
-}
+```text # String "echo" repeated 1,500,000 times.
+echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo 
 ```
 +++ 
 
