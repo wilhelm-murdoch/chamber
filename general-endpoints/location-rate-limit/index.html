@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/rate-limit | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/rate-limit | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="An endpoint dedicated to isolated rate limit testing. This is configured within the http { ... } directive in" />
+    <meta name="description" content="Demonstrates using an endpoint dedicated to isolated rate limit testing. You can observe the configurations as follows." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-rate-limit/">
     <meta property="og:title" content="/rate-limit | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="An endpoint dedicated to isolated rate limit testing. This is configured within the http { ... } directive in">
+    <meta property="og:description" content="Demonstrates using an endpoint dedicated to isolated rate limit testing. You can observe the configurations as follows.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-rate-limit/">
     <meta property="twitter:title" content="/rate-limit | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="An endpoint dedicated to isolated rate limit testing. This is configured within the http { ... } directive in">
+    <meta property="twitter:description" content="Demonstrates using an endpoint dedicated to isolated rate limit testing. You can observe the configurations as follows.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,19 +202,49 @@
         <span>/rate-limit</span>
     </h1>
 </doc-anchor-target>
-<p>An endpoint dedicated to isolated rate limit testing. This is configured within the <code v-pre>http { ... }</code> directive in <code v-pre>./config/openrest/chamber.conf</code>:</p>
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Demonstrates using an endpoint dedicated to isolated rate limit testing. You can observe the configurations as follows.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">limit_req_zone $binary_remote_addr zone=chamber:1m rate=5r/s;
-...
-location &quot;/rate-limit&quot; {
+<div class="codeblock-title">Define the zone &#x27;chamber&#x27; for our requests.</div>
+<pre class="language-none"><code v-pre class="language-none">limit_req_zone $binary_remote_addr zone=chamber:1m rate=5r/s;</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">Configure location to route requests through the zone.</div>
+<pre class="language-none"><code v-pre class="language-none">location = /rate-limit {
+  default_type application/json;
+
   limit_req zone=chamber burst=10 nodelay;
-  ...
+
+  echo '{&quot;elapsed&quot;: $echo_timer_elapsed}';
 }</code></pre>
 </doc-codeblock></div>
-<p>Effectively, rate limit up to 160k unique IP addresses to 5 requests per second, burstable up to 10. This can be demonstrated using the <code v-pre>siege</code> command:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ siege -c 15 -r 1 --no-parser http://localhost:8000/rate-limit
-** SIEGE 4.1.1
+<p>You can read this as rate limiting up to 160k unique IP addresses to 5 requests per second, burstable up to 10.</p>
+<doc-anchor-target id="simulating-rate-limiting">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#simulating-rate-limiting">#</doc-anchor-trigger>
+        <span>Simulating Rate Limiting</span>
+    </h2>
+</doc-anchor-target>
+<p>Simulating high traffic to trigger rate limiting rules can be difficult to do manually. Luckily, there are plenty of tools out there to assist. <code v-pre>siege</code> is one of the more popular options. Installation instructions are a bit out of scope for this document, but there is broad support for it on most operating systems. You can read more about it <a href="https://github.com/JoeDog/siege">here</a>.</p>
+<p>Once installed, you should be able to perform the following simulation.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Simulate 15 concurrent user requests.</div>
+<pre class="language-bash"><code v-pre class="language-bash">siege -c 15 -r 1 --no-parser http://localhost:8000/rate-limit</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="results">
+<template #title>Results</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The final siege report.</div>
+<pre class="language-bash"><code v-pre class="language-bash">** SIEGE 4.1.1
 ** Preparing 15 concurrent users for battle.
 The server is now under siege...
 HTTP/1.1 200     0.02 secs:      21 bytes ==&gt; GET  /rate-limit
@@ -246,13 +276,37 @@ Failed transactions:	           4
 Longest transaction:	        0.03
 Shortest transaction:	        0.02</code></pre>
 </doc-codeblock></div>
-<p>A <code v-pre>HTTP/1.1 503 Service Unavailable</code> is the standard response to passing a threshold and can also be observed via the server&#x27;s logs as:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-none"><code v-pre class="language-none">172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] &quot;GET /rate-limit HTTP/1.1&quot; 200 21 &quot;-&quot; &quot;Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1&quot;
+</doc-tab>
+</doc-tabs>
+<p>You may have noticed a few <code v-pre>503</code> responses in the <code v-pre>siege</code> results. These would correspond to the following server logs.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Logs sent to stdout from the server.</div>
+<pre class="language-bash"><code v-pre class="language-bash">172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] &quot;GET /rate-limit HTTP/1.1&quot; 200 21 &quot;-&quot; &quot;Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1&quot;
 2021/10/25 23:58:22 [error] 8#8: *71 limiting requests, excess: 10.950 by zone &quot;chamber&quot;, client: 172.17.0.1, server: _, request: &quot;GET /rate-limit HTTP/1.1&quot;, host: &quot;localhost:8000&quot;
 172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] &quot;GET /rate-limit HTTP/1.1&quot; 503 194 &quot;-&quot; &quot;Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1&quot;
 2021/10/25 23:58:22 [error] 8#8: *74 limiting requests, excess: 10.950 by zone &quot;chamber&quot;, client: 172.17.0.1, server: _, request: &quot;GET /rate-limit HTTP/1.1&quot;, host: &quot;localhost:8000&quot;
 172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] &quot;GET /rate-limit HTTP/1.1&quot; 503 194 &quot;-&quot; &quot;Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1&quot;</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /latency/degrading {
+  default_type application/json;
+
+  set $connections $connections_active;
+
+  content_by_lua_block {
+    ngx.sleep(1 + ( ngx.var.connections / 10 ))
+    ngx.say(string.format('{&quot;elapsed&quot;: %f}', ngx.now() - ngx.req.start_time()))
+    ngx.exit(ngx.HTTP_OK)
+  }
+}</code></pre>
 </doc-codeblock></div>
 
 

@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,75 +202,110 @@
         <span>Development</span>
     </h1>
 </doc-anchor-target>
-<blockquote>
+<div class="flex mb-6">
+    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3">
+            <h5>So, you want to help?</h5>
 <p>Contributions are always welcome. Just create a PR and remember to be nice.</p>
-</blockquote>
+        </div>
+    </div>
+</div>
+<doc-anchor-target id="build-locally">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#build-locally">#</doc-anchor-trigger>
+        <span>Build Locally</span>
+    </h2>
+</doc-anchor-target>
 <p>Perform the following steps from the root of this repository&#x27;s local working copy to build and run the server image locally:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <pre class="language-bash"><code v-pre class="language-bash">git@github.com:wilhelm-murdoch/chamber.git
 cd chamber/
-docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . </code></pre>
+git_sha=$(git rev-parse --short=8 HEAD)
+docker build --build-arg GIT_SHA=&quot;${git_sha}&quot; -t ghcr.io/wilhelm-murdoch/chamber:latest . </code></pre>
 </doc-codeblock></div>
-<p><code v-pre>GIT_SHA</code>: We generate this release identifier with <code v-pre>$(git rev-parse --short=8 HEAD)</code> and build it into the image itself. This is where we source the content of the <code v-pre>/up</code> endpoint</p>
-<doc-anchor-target id="loop">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#loop">#</doc-anchor-trigger>
-        <span>Loop</span>
-    </h3>
+<p>We pass <code v-pre>$(git rev-parse --short=8 HEAD)</code> through to the build process using a <code v-pre>--build-arg</code> to write the release to a file stored within the resulting image. This content of this file is used by the <code v-pre>/up</code> endpoint.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">Dockerfile</div>
+<pre class="language-none"><code v-pre class="language-none">ARG GIT_SHA
+RUN echo &quot;chamber release: ${GIT_SHA}&quot; &gt; /.git_sha</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /up {
+  default_type text/html;
+  alias /.git_sha;
+}</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="development-loop">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#development-loop">#</doc-anchor-trigger>
+        <span>Development Loop</span>
+    </h2>
 </doc-anchor-target>
-<p>If I find myself making changes to the <code v-pre>chamber.conf</code> file, I like to see these changes immediately. Invoking <code v-pre>docker build ...</code> and <code v-pre>docker run ...</code> with every incremental change can be tedious. So, I cheat by using the following loop:</p>
+<p>If I find myself making changes to the <code v-pre>chamber.conf</code> file, I like to see these changes immediately. Invoking <code v-pre>docker build ...</code> and <code v-pre>docker run ...</code> with every incremental change can be tedious.</p>
 <doc-anchor-target id="run">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#run">#</doc-anchor-trigger>
         <span>Run</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
-<p>This project uses vanilla OpenResty, so I run the following command from the root of this repository&#x27;s working copy:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ docker run -it --rm \
-  --name openresty \
+<p>This project uses vanilla OpenResty, so I run the following command from the root of this repository&#x27;s working copy.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Running the OpenResty container.</div>
+<pre class="language-bash"><code v-pre class="language-bash">docker run -it --rm               \
+  --name openresty                \
   -v config/openresty:/etc/nginx/ \
-  -p 8000:8000 \
+  -p 8000:8000                    \
   openresty/openresty:alpine</code></pre>
 </doc-codeblock></div>
 <p>By mounting <code v-pre>config/openresty</code> to the container&#x27;s <code v-pre>/etc/nginx</code> directory, it starts running with <code v-pre>chamber.conf</code> immediately.</p>
 <doc-anchor-target id="watch">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#watch">#</doc-anchor-trigger>
         <span>Watch</span>
-    </h4>
+    </h3>
 </doc-anchor-target>
 <p>I want OpenResty to reload any time I make changes to <code v-pre>chamber.conf</code>. Luckily, we can perform a &quot;soft reload&quot; on the OpenResty process from within the container with <code v-pre>openresty -s reload</code>. I want to execute this command every time I save my changes, so let&#x27;s use <code v-pre>fswatch</code> for this:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ fswatch -o config/openresty/conf.d/chamber.conf | xargs -n1 -I{} docker exec openresty openresty -s reload</code></pre>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">fswatch -o config/openresty/conf.d/chamber.conf | xargs -n1 -I{} docker exec openresty openresty -s reload</code></pre>
 </doc-codeblock></div>
 <p>I use <code v-pre>fswatch</code> as I am currently developing on MacOS. It&#x27;s available on Linux, but you may want to use <code v-pre>inotify</code> for this instead.</p>
 <doc-anchor-target id="request">
-    <h4>
+    <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#request">#</doc-anchor-trigger>
         <span>Request</span>
-    </h4>
-</doc-anchor-target>
-<p>If I&#x27;m working on a new endpoint, I&#x27;ll be hitting it with <code v-pre>curl</code> quite often. Let&#x27;s automate this as well with <code v-pre>watch</code>:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ watch -n 1 -c 'curl -s localhost:8000/my/new/endpoint'</code></pre>
-</doc-codeblock></div>
-<p>These 3 steps allow me to see my changes almost immediately without leaving my editor.</p>
-<doc-anchor-target id="maintainers">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#maintainers">#</doc-anchor-trigger>
-        <span>Maintainers</span>
     </h3>
 </doc-anchor-target>
-<p>This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you&#x27;re a maintainer of this project, you can bypass this process with the following steps:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ git@github.com:wilhelm-murdoch/chamber.git
-$ cd chamber/
-$ echo &quot;${GITHUB_TOKEN}&quot; | docker login ghcr.io -u USERNAME --password-stdin
-$ docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . 
-$ docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
+<p>If I&#x27;m working on a new endpoint, I&#x27;ll be hitting it with <code v-pre>curl</code> quite often. Let&#x27;s automate this as well with <code v-pre>watch</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">watch -n 1 -c 'curl -s localhost:8000/my/new/endpoint'</code></pre>
 </doc-codeblock></div>
-<p><code v-pre>GITHUB_TOKEN</code>: You will need a personal development token. You can generate one <a href="https://github.com/settings/tokens">here</a> with the <code v-pre>write:packages</code> scope.</p>
+<doc-anchor-target id="maintainers">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#maintainers">#</doc-anchor-trigger>
+        <span>Maintainers</span>
+    </h2>
+</doc-anchor-target>
+<p>This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you&#x27;re a maintainer of this project, you can easily bypass this process.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">git@github.com:wilhelm-murdoch/chamber.git
+cd chamber/
+echo &quot;${GITHUB_TOKEN}&quot; | docker login ghcr.io -u USERNAME --password-stdin
+git_sha=$(git rev-parse --short=8 HEAD)
+docker build --build-arg GIT_SHA=&quot;${git_sha}&quot; -t ghcr.io/wilhelm-murdoch/chamber:latest . 
+docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
+</doc-codeblock></div>
+<p>You will need a personal development token exported to your local environment as <code v-pre>GITHUB_TOKEN</code>. You can generate one <a href="https://github.com/settings/tokens">here</a> with the <code v-pre>write:packages</code> scope.</p>
 
 
 

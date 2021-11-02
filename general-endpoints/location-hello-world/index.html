@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/hello-world | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/hello-world | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Returns a text response for \"Hello, world!\" in all google-supported languages:" />
+    <meta name="description" content="Returns a text response for \"Hello, world!\" in all languages supported by Google Translate." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-hello-world/">
     <meta property="og:title" content="/hello-world | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Returns a text response for \"Hello, world!\" in all google-supported languages:">
+    <meta property="og:description" content="Returns a text response for \"Hello, world!\" in all languages supported by Google Translate.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-hello-world/">
     <meta property="twitter:title" content="/hello-world | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Returns a text response for \"Hello, world!\" in all google-supported languages:">
+    <meta property="twitter:description" content="Returns a text response for \"Hello, world!\" in all languages supported by Google Translate.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,14 +202,72 @@
         <span>/hello-world</span>
     </h1>
 </doc-anchor-target>
-<p>Returns a text response for &quot;Hello, world!&quot; in all google-supported languages:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ for i in {1..5}; do curl http://localhost:8000/hello-world; done
-Ahoj svete!
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Returns a text response for &quot;Hello, world!&quot; in all languages supported by Google Translate.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with text:</div>
+<pre class="language-bash"><code v-pre class="language-bash">for i in {1..5}; do curl http://localhost:8000/hello-world; done</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/hello-world</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 16:12:38 GMT
+Content-Type: text/html
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="text">
+<template #title>Text</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">Ahoj svete!
 你好，世界！
 Hello, World!
 Բարեւ աշխարհ!
 Dia duit, a shaoghail!</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /hello-world {
+  default_type text/html;
+
+  content_by_lua_block {
+    local languages = {
+      'Hello, world!', 'Hello Wêreld!', 'Përshendetje Botë!', 'ሰላም ልዑል!', 'مرحبا بالعالم!', 'Բարեւ աշխարհ!', 'Salam, dünya!', 'Kaixo Mundua!', 'Прывітанне Сусвет!', 'ওহে বিশ্ব!', 'Zdravo svijete!', 'Здравей свят!', 'Hola món!', 'Hello, kalibutan!', 'Moni Dziko Lapansi!',
+      '你好，世界！', '你好，世界！', 'Salute, mondu !', 'Pozdrav svijete!', 'Ahoj světe!', 'Hej Verden!', 'Hallo Wereld!', 'Saluton mondo!', 'Tere, Maailm!', 'Hello, mundo!', 'Hei maailma!', 'Bonjour le monde!', 'Hallo wrâld!', 'Ola, mundo!', 'Გამარჯობა მსოფლიო!', 'Hallo Welt!',
+      'Γειά σου Κόσμε!', 'હેલો, વિશ્વ!', 'Bonjou, mond!', 'Sannu Duniya!', 'Aloha, honua!', 'שלום עולם!', 'नमस्ते दुनिया!', 'Nyob zoo, ntiaj teb!', 'Helló Világ!', 'Halló heimur!', 'Ndewo Ụwa!', 'Halo Dunia!', 'Dia duit, a shaoghail!', 'Ciao mondo!', 'こんにちは世界！', 'Hello, donya!',
+      'ಹಲೋ, ವಿಶ್ವ!', 'Сәлем Әлем!', 'សួស្តី​ពិភពលោក!', 'Mwaramutse, isi!', '안녕하세요, 세계입니다!', 'Silav, dinya!', 'Салам дүйнө!', 'ສະ​ບາຍ​ດີ​ຊາວ​ໂລກ!', 'Salve mundus!', 'Sveika pasaule!', 'Labas pasauli!', 'Moien Welt!', 'Здраво свету!', 'Hai dunia!', 'ഹലോ വേൾഡ്!', 'Hello dinja!', 'Kia ora te ao!',
+      'नमस्कार जग!', 'Сайн уу дэлхий!', 'မင်္ဂလာပါကမ္ဘာလောက!', 'नमस्कार संसार!', 'Hei Verden!', 'ନମସ୍କାର ବିଶ୍ୱବାସି!', 'سلام نړی!', 'Witaj świecie!', 'Olá Mundo!', 'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਦੁਨਿਆ!', 'Salut Lume!', 'Привет, мир!', 'Talofa le lalolagi!', 'Hàlo a Shaoghail!', 'Здраво Свете!', 'Lefatše Lumela!',
+      'Mhoro nyika!', 'هيلو دنيا!', 'හෙලෝ වර්ල්ඩ්!', 'Ahoj svete!', 'Pozdravljen, svet!', 'Salaamu calaykum!', '¡Hola Mundo!', 'Halo Dunya!', 'Salamu, Dunia!', 'Hej världen!', 'Салом Ҷаҳон!', 'வணக்கம் உலகம்!', 'Сәлам, Дөнья!', 'హలో వరల్డ్!', 'สวัสดีชาวโลก!', 'Selam Dünya!', 'Salam dünýä!',
+      'Привіт Світ!', 'ہیلو دنیا!', 'ياخشىمۇسىز دۇنيا!', 'Salom Dunyo!', 'Chào thế giới!', 'Helo Byd!', 'Molo Lizwe!', 'העלא וועלט!', 'Mo ki O Ile Aiye!', 'Sawubona Mhlaba!'
+    }
+
+    ngx.say(languages[math.random(#languages)])
+    ngx.exit(ngx.HTTP_OK)
+  }
+}</code></pre>
 </doc-codeblock></div>
 
 

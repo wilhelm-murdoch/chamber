@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/up | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/up | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="This is an endpoint suitable for healthchecks. It will return a 200 OK response as well as the currently-running release of the server:" />
+    <meta name="description" content="This is an endpoint suitable for health checks. It will return a 200 OK response as well as the currently-running release of the server." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-up/">
     <meta property="og:title" content="/up | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="This is an endpoint suitable for healthchecks. It will return a 200 OK response as well as the currently-running release of the server:">
+    <meta property="og:description" content="This is an endpoint suitable for health checks. It will return a 200 OK response as well as the currently-running release of the server.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-up/">
     <meta property="twitter:title" content="/up | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="This is an endpoint suitable for healthchecks. It will return a 200 OK response as well as the currently-running release of the server:">
+    <meta property="twitter:description" content="This is an endpoint suitable for health checks. It will return a 200 OK response as well as the currently-running release of the server.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,19 +202,65 @@
         <span>/up</span>
     </h1>
 </doc-anchor-target>
-<p>This is an endpoint suitable for healthchecks. It will return a <code v-pre>200 OK</code> response as well as the currently-running release of the server:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -i http://localhost:8000/up
-HTTP/1.1 200 OK
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>This is an endpoint suitable for health checks. It will return a <code v-pre>200 OK</code> response as well as the currently-running release of the server.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with text:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl http://localhost:8000/up</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/up</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 14:50:45 GMT
 Content-Type: text/html
 Content-Length: 26
 Last-Modified: Mon, 25 Oct 2021 13:43:19 GMT
 Connection: keep-alive
 ETag: &quot;6176b477-1a&quot;
-Accept-Ranges: bytes
-
-chamber release: a5fecbfa</code></pre>
+Accept-Ranges: bytes</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The current release of the service.</div>
+<pre class="language-none"><code v-pre class="language-none">chamber release: a5fecbfa</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<p>The output is sourced from a file that is generated during build time for the associated Docker image.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">Dockerfile</div>
+<pre class="language-none"><code v-pre class="language-none">ARG GIT_SHA
+RUN echo &quot;chamber release: ${GIT_SHA}&quot; &gt; /.git_sha</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /up {
+  default_type text/html;
+  alias /.git_sha;
+}</code></pre>
 </doc-codeblock></div>
 
 

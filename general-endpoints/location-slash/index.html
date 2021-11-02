@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/ | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/ | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="This is the landing page of the server:" />
+    <meta name="description" content="This is simply the default landing page of the service." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-slash/">
     <meta property="og:title" content="/ | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="This is the landing page of the server:">
+    <meta property="og:description" content="This is simply the default landing page of the service.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-slash/">
     <meta property="twitter:title" content="/ | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="This is the landing page of the server:">
+    <meta property="twitter:description" content="This is simply the default landing page of the service.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,13 +202,60 @@
         <span>/</span>
     </h1>
 </doc-anchor-target>
-<p>This is the landing page of the server:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -I localhost:8000/
-HTTP/1.1 200 OK
-Date: Mon, 25 Oct 2021 14:36:50 GMT
-Content-Type: text/html
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>This is simply the default landing page of the service.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with HTML:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl http://localhost:8000/</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Mon, 25 Oct 2021 14:52:44 GMT
+Content-Type: text/plain
+Content-Length: 100
 Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="html">
+<template #title>HTML</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">HTML body and css representing the landing page.</div>
+<pre class="language-markup"><code v-pre class="language-markup">&lt;!DOCTYPE html&gt;&lt;html lang='en'&gt; ... &lt;/html&gt;</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = / {
+  default_type text/html;
+
+  echo -n &quot;&lt;!DOCTYPE html&gt;&lt;html lang='en'&gt;&lt;head&gt;&lt;meta name='apple-mobile-web-app-capable' content='yes' \&gt;&lt;meta http-equiv='refresh' content='15' \&gt;&lt;meta charset='utf-8' \&gt;&lt;title&gt;{ chamber }&lt;/title&gt;&lt;/head&gt;&lt;style&gt;&quot;
+  echo -n &quot;*{margin:0;padding:0}body,html{width:100%;height:100%;background-color:#000}.wrapper{width:100%;height:100%;display:flex;justify-content:center;align-items:center}.wrapper h1.glitch{color:#fff;font-family:sans-serif;font-weight:800;position:relative;font-size:100px;padding:30px}.wrapper h1.glitch::after,.wrapper h1.glitch::before{padding:30px;color:#fff;content:'{ chamber }';position:absolute;width:100%;height:100%;background:#000;overflow:hidden;top:0}.wrapper h1.glitch::before{left:3px;text-shadow:-2px 0 red;animation-name:glitch-animation-1;animation-duration:2s;animation-timing-function:linear;animation-delay:0s;animation-iteration-count:infinite;animation-direction:reverse-alternate}.wrapper h1.glitch::after{left:-3px;text-shadow:-2px 0 #00f;animation-name:glitch-animation-2;animation-duration:2s;animation-timing-function:linear;animation-delay:0s;animation-iteration-count:infinite;animation-direction:reverse-alternate}&quot;
+  echo -n &quot;@keyframes glitch-animation-1{0%{clip:rect(36px,600px,94px,30px)}5%{clip:rect(120px,600px,5px,30px)}10%{clip:rect(116px,600px,138px,30px)}15%{clip:rect(10px,600px,40px,30px)}20%{clip:rect(82px,600px,100px,30px)}25%{clip:rect(149px,600px,17px,30px)}30%{clip:rect(38px,600px,7px,30px)}35%{clip:rect(125px,600px,110px,30px)}40%{clip:rect(63px,600px,41px,30px)}45%{clip:rect(27px,600px,50px,30px)}50%{clip:rect(81px,600px,101px,30px)}55%{clip:rect(129px,600px,44px,30px)}60%{clip:rect(7px,600px,96px,30px)}65%{clip:rect(124px,600px,71px,30px)}70%{clip:rect(6px,600px,88px,30px)}75%{clip:rect(89px,600px,65px,30px)}80%{clip:rect(138px,600px,2px,30px)}85%{clip:rect(62px,600px,57px,30px)}90%{clip:rect(109px,600px,70px,30px)}95%{clip:rect(116px,600px,19px,30px)}100%{clip:rect(130px,600px,52px,30px)}}@keyframes glitch-animation-2{0%{clip:rect(29px,600px,93px,30px)}5%{clip:rect(14px,600px,68px,30px)}10%{clip:rect(94px,600px,40px,30px)}15%{clip:rect(4px,600px,58px,30px)}20%{clip:rect(1px,600px,28px,30px)}25%{clip:rect(39px,600px,11px,30px)}30%{clip:rect(45px,600px,93px,30px)}35%{clip:rect(83px,600px,94px,30px)}40%{clip:rect(39px,600px,110px,30px)}45%{clip:rect(95px,600px,88px,30px)}50%{clip:rect(96px,600px,103px,30px)}55%{clip:rect(17px,600px,29px,30px)}60%{clip:rect(53px,600px,1px,30px)}65%{clip:rect(129px,600px,128px,30px)}70%{clip:rect(74px,600px,105px,30px)}75%{clip:rect(40px,600px,48px,30px)}80%{clip:rect(90px,600px,52px,30px)}85%{clip:rect(57px,600px,83px,30px)}90%{clip:rect(39px,600px,143px,30px)}95%{clip:rect(25px,600px,87px,30px)}100%{clip:rect(128px,600px,91px,30px)}}&quot;
+  echo -n &quot;&lt;/style&gt;&lt;body&gt;&lt;div class='wrapper' data-text='{ chamber }'&gt;&lt;h1 class='glitch'&gt;{ chamber }&lt;/h1&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;&quot;;
+}</code></pre>
 </doc-codeblock></div>
 
 

@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/status | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/status | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Returns a live counting of the following server stats:" />
+    <meta name="description" content="Returns a live counting of various running server statistics." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-status/">
     <meta property="og:title" content="/status | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Returns a live counting of the following server stats:">
+    <meta property="og:description" content="Returns a live counting of various running server statistics.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-status/">
     <meta property="twitter:title" content="/status | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Returns a live counting of the following server stats:">
+    <meta property="twitter:description" content="Returns a live counting of various running server statistics.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,16 +202,40 @@
         <span>/status</span>
     </h1>
 </doc-anchor-target>
-<p>Returns a live counting of the following server stats:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -i http://localhost:8000/status
-HTTP/1.1 200 OK
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Returns a live counting of various running server statistics.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl http://localhost:8000/status</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/status</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 14:52:44 GMT
 Content-Type: text/plain
 Content-Length: 100
-Connection: keep-alive
-
-{
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The current status of the running server.</div>
+<pre class="language-json"><code v-pre class="language-json">{
   &quot;connection&quot;: 14078,
   &quot;connection_requests&quot;: 1,
   &quot;connections_active&quot;: 1,
@@ -220,7 +244,23 @@ Connection: keep-alive
   &quot;connections_waiting&quot;: 0
 }</code></pre>
 </doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
 <p>You can read more about what this information means <a href="http://nginx.org/en/docs/http/ngx_http_stub_status_module.html#stub_status">here</a>.</p>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /status {
+  default_type application/json;
+  return 200 '{&quot;connection&quot;: $connection, &quot;connection_requests&quot;: $connection_requests, &quot;connections_active&quot;: $connections_active, &quot;connections_active&quot;: $connections_active, &quot;connections_reading&quot;: $connections_reading, &quot;connections_writing&quot;: $connections_writing, &quot;connections_waiting&quot;: $connections_waiting }';
+}</code></pre>
+</doc-codeblock></div>
 
 
 

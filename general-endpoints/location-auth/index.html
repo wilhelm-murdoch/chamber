@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="A test endpoint for basic authentication. The default username and password are both chamber. A succesful attempt will display the landing page." />
+    <meta name="description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
     <meta property="og:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="A test endpoint for basic authentication. The default username and password are both chamber. A succesful attempt will display the landing page.">
+    <meta property="og:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
     <meta property="twitter:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="A test endpoint for basic authentication. The default username and password are both chamber. A succesful attempt will display the landing page.">
+    <meta property="twitter:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,37 +202,126 @@
         <span>/auth</span>
     </h1>
 </doc-anchor-target>
-<p>A test endpoint for <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication">basic authentication</a>. The default username and password are both <code v-pre>chamber</code>. A succesful attempt will display the landing page.</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -u chamber:chamber -I http://localhost:8000/auth
-HTTP/1.1 200 OK
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Demonstrates an endpoint which supports <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication">basic authentication</a>. The default username and password are both <code v-pre>chamber</code> and a succesful attempt will display the landing page.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with HTML:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber http://localhost:8000/auth</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber -I http://localhost:8000/auth</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 14:37:21 GMT
 Content-Type: text/html
 Connection: keep-alive</code></pre>
 </doc-codeblock></div>
-<p>An unsuccessful attempt will result in the following response:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -u derp:herp -I http://localhost:8000/auth
-HTTP/1.1 401 Unauthorized
+</doc-tab>
+<doc-tab id="html">
+<template #title>HTML</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">HTML body and css representing the landing page.</div>
+<pre class="language-markup"><code v-pre class="language-markup">&lt;!DOCTYPE html&gt;&lt;html lang='en'&gt; ... &lt;/html&gt;</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<p>However, an unsuccessful attempt will result in the following response.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with HTML:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp http://localhost:8000/auth</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp -I http://localhost:8000/auth</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 401 Unauthorized
 Date: Mon, 25 Oct 2021 14:36:28 GMT
 Content-Type: text/html
 Content-Length: 176
 Connection: keep-alive
 WWW-Authenticate: Basic realm=&quot;Enter the Chamber&quot;</code></pre>
 </doc-codeblock></div>
+</doc-tab>
+<doc-tab id="html">
+<template #title>HTML</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">HTML body and css representing the landing page.</div>
+<pre class="language-markup"><code v-pre class="language-markup">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;401 Authorization Required&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;h1&gt;401 Authorization Required&lt;/h1&gt;
+    &lt;/center&gt;
+    &lt;hr&gt;
+    &lt;center&gt;openresty&lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="custom-auth">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#custom-auth">#</doc-anchor-trigger>
+        <span>Custom Auth</span>
+    </h2>
+</doc-anchor-target>
 <p>You can customise the username and password using the following environmental variables:</p>
-<p><code v-pre>CHAMBER_BASIC_AUTH_USER</code>: The custom username.<br />
-<code v-pre>CHAMBER_BASIC_AUTH_PASSWORD</code>: The custom password.</p>
+<ul>
+<li><code v-pre>CHAMBER_BASIC_AUTH_USER</code>: The custom username.</li>
+<li><code v-pre>CHAMBER_BASIC_AUTH_PASSWORD</code>: The custom password.</li>
+</ul>
 <p>Pass them through with the <code v-pre>-e</code> flag when running the server like so:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ docker run -it --rm \
-    --name chamber \
-    -p 8000:8000 \
-    -e CHAMBER_BASIC_AUTH_USER=wilhelm \
-    -e CHAMBER_BASIC_AUTH_PASSWORD=mypassword \
-    ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">export CHAMBER_BASIC_AUTH_USER=wilhelm
+export CHAMBER_BASIC_AUTH_PASSWORD=mypassword
+docker run -it --rm               \
+  --name chamber                  \
+  -p 8000:8000                    \
+  -e CHAMBER_BASIC_AUTH_USER      \
+  -e CHAMBER_BASIC_AUTH_PASSWORD= \
+  ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
 </doc-codeblock></div>
 <p>These will be picked up just before starting OpenResty and will be temporarily stored in <code v-pre>/etc/nginx/.htpasswd</code>. Restarting the container without these variables will restore this file to its default state.</p>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /auth {
+  default_type text/html;
+
+  auth_basic &quot;Enter the Chamber&quot;;
+  auth_basic_user_file /etc/nginx/.htpasswd;
+
+  echo_location_async /;
+}</code></pre>
+</doc-codeblock></div>
 
 
 

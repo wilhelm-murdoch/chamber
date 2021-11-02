@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:" />
+    <meta name="description" content="This endpoint will redirect you straight to this documentation site." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-docs/">
     <meta property="og:title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:">
+    <meta property="og:description" content="This endpoint will redirect you straight to this documentation site.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-docs/">
     <meta property="twitter:title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:">
+    <meta property="twitter:description" content="This endpoint will redirect you straight to this documentation site.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689180792018" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180792018" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180792018" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,15 +202,71 @@
         <span>/docs</span>
     </h1>
 </doc-anchor-target>
-<p>If you hit <a href="http://localhost:8000/docs">this</a> endpoint in your browser, you will be redirected to this <code v-pre>README.md</code> file:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -i http://localhost:8000/docs
-HTTP/1.1 301 Moved Permanently
-Date: Mon, 25 Oct 2021 15:04:50 GMT
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>This endpoint will redirect you straight to this documentation site.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with HTML:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl http://localhost:8000/docs</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/docs</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Optionally, follow the redirect:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -L http://localhost:8000/docs</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 301 Moved Permanently
+Date: Tue, 02 Nov 2021 15:52:51 GMT
 Content-Type: text/html
 Content-Length: 166
 Connection: keep-alive
-Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md</code></pre>
+Location: https://chamber.wilhelm.codes</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="html">
+<template #title>HTML</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Output when not following redirects.</div>
+<pre class="language-markup"><code v-pre class="language-markup">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;301 Moved Permanently&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;center&gt;
+      &lt;h1&gt;301 Moved Permanently&lt;/h1&gt;
+    &lt;/center&gt;
+    &lt;hr&gt;
+    &lt;center&gt;openresty&lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /docs {
+  return 301 https://chamber.wilhelm.codes;
+}</code></pre>
 </doc-codeblock></div>
 
 
