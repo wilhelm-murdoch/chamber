@@ -1,6 +1,6 @@
 ---
-icon: home
 order: 100
+icon: home
 label: Welcome
 ---
 
