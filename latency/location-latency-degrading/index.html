@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/latency/degrading | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/latency/degrading | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Response times will increase with the overall active connection count. This can be tested with the following" />
+    <meta name="description" content="Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/latency/location-latency-degrading/">
     <meta property="og:title" content="/latency/degrading | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Response times will increase with the overall active connection count. This can be tested with the following">
+    <meta property="og:description" content="Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/latency/location-latency-degrading/">
     <meta property="twitter:title" content="/latency/degrading | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Response times will increase with the overall active connection count. This can be tested with the following">
+    <meta property="twitter:description" content="Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689174368999" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689180748577" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689174368999" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180748577" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689174368999" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180748577" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,10 +202,65 @@
         <span>/latency/degrading</span>
     </h1>
 </doc-anchor-target>
-<p>Response times will increase with the overall active connection count. This can be tested with the following <code v-pre>siege</code> command:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading
-** SIEGE 4.1.1
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/latency/degrading | jq -r '.'</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/latency/degrading</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The duration of the request.</div>
+<pre class="language-json"><code v-pre class="language-json">{
+  &quot;elapsed&quot;: 1.101
+}</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="simulating-load">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#simulating-load">#</doc-anchor-trigger>
+        <span>Simulating Load</span>
+    </h2>
+</doc-anchor-target>
+<p>Simulating high traffic can be difficult to do manually. Luckily, there are plenty of tools out there to assist. <code v-pre>siege</code> is one of the more popular options. Installation instructions are a bit out of scope for this document, but there is broad support for it on most operating systems. You can read more about it <a href="https://github.com/JoeDog/siege">here</a>.</p>
+<p>Once installed, you should be able to perform the following simulation.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Run this test once for 150 concurrent users.</div>
+<pre class="language-bash"><code v-pre class="language-bash">siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The final siege report.</div>
+<pre class="language-bash"><code v-pre class="language-bash">** SIEGE 4.1.1
 ** Preparing 150 concurrent users for battle.
 The server is now under siege...
 HTTP/1.1 200     1.31 secs:      22 bytes ==&gt; GET  /latency/degrading
@@ -238,6 +293,29 @@ Failed transactions:	           0
 Longest transaction:	       16.16
 Shortest transaction:	        1.31</code></pre>
 </doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /latency/degrading {
+  default_type application/json;
+
+  set $connections $connections_active;
+
+  content_by_lua_block {
+    ngx.sleep(1 + ( ngx.var.connections / 10 ))
+    ngx.say(string.format('{&quot;elapsed&quot;: %f}', ngx.now() - ngx.req.start_time()))
+    ngx.exit(ngx.HTTP_OK)
+  }
+}</code></pre>
+</doc-codeblock></div>
 
 
 
@@ -257,11 +335,11 @@ Shortest transaction:	        1.31</code></pre>
 
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/latency/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-up/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">Latency</span>
+                <span class="block mt-1">/up</span>
             </span>
         </a>
     </div>

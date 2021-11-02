@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/latency/erratic | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/latency/erratic | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Response times between 1 to 10 seconds will be randomly selected:" />
+    <meta name="description" content="Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/latency/location-latency-erratic/">
     <meta property="og:title" content="/latency/erratic | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Response times between 1 to 10 seconds will be randomly selected:">
+    <meta property="og:description" content="Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/latency/location-latency-erratic/">
     <meta property="twitter:title" content="/latency/erratic | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Response times between 1 to 10 seconds will be randomly selected:">
+    <meta property="twitter:description" content="Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689174368999" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689180748577" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689174368999" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180748577" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689174368999" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180748577" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,14 +202,61 @@
         <span>/latency/erratic</span>
     </h1>
 </doc-anchor-target>
-<p>Response times between 1 to 10 seconds will be randomly selected:</p>
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between <code v-pre>1</code> and <code v-pre>10</code> seconds.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl http://localhost:8000/latency/erratic</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/latency/erratic</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:58:53 GMT
+Content-Type: application/json
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The duration of the request.</div>
+<pre class="language-json"><code v-pre class="language-json">{
+  &quot;elapsed&quot;: 6.973
+}</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl http://localhost:8000/latency/erratic
-{&quot;elapsed&quot;: 2.006}
-$ curl http://localhost:8000/latency/erratic
-{&quot;elapsed&quot;: 5.003}
-$ curl http://localhost:8000/latency/erratic
-{&quot;elapsed&quot;: 1.920}</code></pre>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /latency/erratic {
+  default_type application/json;
+
+  set_random $random 1 10;
+  echo_sleep $random;
+
+  echo '{&quot;elapsed&quot;: $echo_timer_elapsed}';
+}</code></pre>
 </doc-codeblock></div>
 
 
@@ -240,10 +287,10 @@ $ curl http://localhost:8000/latency/erratic
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/streaming-support/location-streaming-sse/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/latency/location-latency-slow/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">/streaming/sse</span>
+                <span class="block mt-1">/latency/slow</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>

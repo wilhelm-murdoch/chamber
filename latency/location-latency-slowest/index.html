@@ -9,29 +9,29 @@
     <meta name="turbo-cache-control" content="no-cache">
 
     <!-- Primary Meta Tags -->
-    <title>Maintainers | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
-    <meta name="title" content="Maintainers | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Contributions are always welcome. Just create a PR and remember to be nice." />
+    <title>/latency/slowest | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
+    <meta name="title" content="/latency/slowest | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta name="description" content="Demonstrates a hard-coded response time of 20 seconds. This is useful for testing consistently-long-running requests." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chamber.wilhelm.codes/contributing/maintainers/">
-    <meta property="og:title" content="Maintainers | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Contributions are always welcome. Just create a PR and remember to be nice.">
+    <meta property="og:url" content="https://chamber.wilhelm.codes/latency/location-latency-slowest/">
+    <meta property="og:title" content="/latency/slowest | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="og:description" content="Demonstrates a hard-coded response time of 20 seconds. This is useful for testing consistently-long-running requests.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://chamber.wilhelm.codes/contributing/maintainers/">
-    <meta property="twitter:title" content="Maintainers | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Contributions are always welcome. Just create a PR and remember to be nice.">
+    <meta property="twitter:url" content="https://chamber.wilhelm.codes/latency/location-latency-slowest/">
+    <meta property="twitter:title" content="/latency/slowest | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="twitter:description" content="Demonstrates a hard-coded response time of 20 seconds. This is useful for testing consistently-long-running requests.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689174368999" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689180748577" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689174368999" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689180748577" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689174368999" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689180748577" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -196,81 +196,67 @@
                 <div id="docs-sidebar-right-toggle"></div>
                
                 <!-- Page content  -->
-<doc-anchor-target id="maintainers" class="break-words">
+<doc-anchor-target id="latencyslowest" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#maintainers">#</doc-anchor-trigger>
-        <span>Maintainers</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#latencyslowest">#</doc-anchor-trigger>
+        <span>/latency/slowest</span>
     </h1>
 </doc-anchor-target>
-<blockquote>
-<p>Contributions are always welcome. Just create a PR and remember to be nice.</p>
-</blockquote>
-<p>Perform the following steps from the root of this repository&#x27;s local working copy to build and run the server image locally:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ git@github.com:wilhelm-murdoch/chamber.git
-$ cd chamber/
-$ docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . </code></pre>
-</doc-codeblock></div>
-<p><code v-pre>GIT_SHA</code>: We generate this release identifier with <code v-pre>$(git rev-parse --short=8 HEAD)</code> and build it into the image itself. This is where we source the content of the <code v-pre>/up</code> endpoint.</p>
-<doc-anchor-target id="development-loop">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#development-loop">#</doc-anchor-trigger>
-        <span>Development Loop</span>
-    </h3>
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
 </doc-anchor-target>
-<p>If I find myself making changes to the <code v-pre>chamber.conf</code> file, I like to see these changes immediately. Invoking <code v-pre>docker build ...</code> and <code v-pre>docker run ...</code> with every incremental change can be tedious. So, I cheat by using the following loop:</p>
-<doc-anchor-target id="run">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#run">#</doc-anchor-trigger>
-        <span>Run</span>
-    </h4>
-</doc-anchor-target>
-<p>This project uses vanilla OpenResty, so I run the following command from the root of this repository&#x27;s working copy:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ docker run -it --rm \
-  --name openresty \
-  -v config/openresty:/etc/nginx/ \
-  -p 8000:8000 \
-  openresty/openresty:alpine</code></pre>
+<p>Demonstrates a hard-coded response time of <code v-pre>20</code> seconds. This is useful for testing consistently-long-running requests.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/latency/slowest | jq -r '.'</code></pre>
 </doc-codeblock></div>
-<p>By mounting <code v-pre>config/openresty</code> to the container&#x27;s <code v-pre>/etc/nginx</code> directory, it starts running with <code v-pre>chamber.conf</code> immediately.</p>
-<doc-anchor-target id="watch">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#watch">#</doc-anchor-trigger>
-        <span>Watch</span>
-    </h4>
-</doc-anchor-target>
-<p>I want OpenResty to reload any time I make changes to <code v-pre>chamber.conf</code>. Luckily, we can perform a &quot;soft reload&quot; on the OpenResty process from within the container with <code v-pre>openresty -s reload</code>. I want to execute this command every time I save my changes, so let&#x27;s use <code v-pre>fswatch</code> for this:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ fswatch -o config/openresty/conf.d/chamber.conf | xargs -n1 -I{} docker exec openresty openresty -s reload</code></pre>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/latency/slowest</code></pre>
 </doc-codeblock></div>
-<p>I use <code v-pre>fswatch</code> as I am currently developing on MacOS. It&#x27;s available on Linux, but you may want to use <code v-pre>inotify</code> for this instead.</p>
-<doc-anchor-target id="request">
-    <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#request">#</doc-anchor-trigger>
-        <span>Request</span>
-    </h4>
-</doc-anchor-target>
-<p>If I&#x27;m working on a new endpoint, I&#x27;ll be hitting it with <code v-pre>curl</code> quite often. Let&#x27;s automate this as well with <code v-pre>watch</code>:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ watch -n 1 -c 'curl -s localhost:8000/my/new/endpoint'</code></pre>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive</code></pre>
 </doc-codeblock></div>
-<p>These 3 steps allow me to see my changes almost immediately without leaving my editor.</p>
-<doc-anchor-target id="for-maintainers">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#for-maintainers">#</doc-anchor-trigger>
-        <span>For Maintainers</span>
-    </h3>
-</doc-anchor-target>
-<p>This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you&#x27;re a maintainer of this project, you can bypass this process with the following steps:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ git@github.com:wilhelm-murdoch/chamber.git
-$ cd chamber/
-$ echo &quot;${GITHUB_TOKEN}&quot; | docker login ghcr.io -u USERNAME --password-stdin
-$ docker build --build-arg GIT_SHA=$(git rev-parse --short=8 HEAD) -t ghcr.io/wilhelm-murdoch/chamber:latest . 
-$ docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">The duration of the request.</div>
+<pre class="language-json"><code v-pre class="language-json">{
+  &quot;elapsed&quot;: 20.12
+}</code></pre>
 </doc-codeblock></div>
-<p><code v-pre>GITHUB_TOKEN</code>: You will need a personal development token. You can generate one <a href="https://github.com/settings/tokens">here</a> with the <code v-pre>write:packages</code> scope.</p>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /latency/slowest {
+  default_type application/json;
+
+  echo_sleep 20;
+
+  echo '{&quot;elapsed&quot;: $echo_timer_elapsed}';
+}</code></pre>
+</doc-codeblock></div>
 
 
 
@@ -280,7 +266,7 @@ $ docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
             </div>
 
             <div class="flex flex-wrap items-center justify-between mt-14">
-    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/wilhelm-murdoch/chamber/blob/main/contributing/maintainers.md" target="_blank" rel="noopener">
+    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/wilhelm-murdoch/chamber/blob/main/latency/location-latency-slowest.md" target="_blank" rel="noopener">
         <svg class="mr-1.5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M20 12c-.55 0-1 .45-1 1v7c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h7c.55 0 1-.45 1-1s-.45-1-1-1H4C2.35 3 1 4.35 1 6v14c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-7c0-.55-.45-1-1-1z" /><path d="M22.21 1.79c-1.18-1.18-3.24-1.18-4.41 0l-9.5 9.5c-.13.13-.22.29-.26.46l-1 4c-.08.34.01.7.26.95.18.2.44.3.7.3.08 0 .16-.01.24-.03l4-1c.18-.04.34-.13.46-.26l9.5-9.5c1.22-1.22 1.22-3.2.01-4.42zm-1.42 3l-9.3 9.3-2.11.53.53-2.11 9.3-9.3c.42-.42 1.16-.42 1.59 0 .43.43.43 1.15-.01 1.58z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         <span>Edit this page</span>
     </a>
@@ -290,20 +276,20 @@ $ docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
 
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/contributing/license/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/latency/location-latency-slower/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">License</span>
+                <span class="block mt-1">/latency/slower</span>
             </span>
         </a>
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/contributing/support/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/response-sizes/location-size-smallest/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">Support</span>
+                <span class="block mt-1">/size/smallest</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -351,6 +337,6 @@ $ docker push ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "Maintainers", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "/latency/slowest", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>

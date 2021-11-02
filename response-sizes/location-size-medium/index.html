@@ -9,21 +9,21 @@
     <meta name="turbo-cache-control" content="no-cache">
 
     <!-- Primary Meta Tags -->
-    <title>/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
-    <meta name="title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:" />
+    <title>/size/medium | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
+    <meta name="title" content="/size/medium | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta name="description" content="Demonstrates a response body of a predetermined size. This is useful for testing endpoints which which respond with various content lengths." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-docs/">
-    <meta property="og:title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:">
+    <meta property="og:url" content="https://chamber.wilhelm.codes/response-sizes/location-size-medium/">
+    <meta property="og:title" content="/size/medium | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="og:description" content="Demonstrates a response body of a predetermined size. This is useful for testing endpoints which which respond with various content lengths.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-docs/">
-    <meta property="twitter:title" content="/docs | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="If you hit this endpoint in your browser, you will be redirected to this README.md file:">
+    <meta property="twitter:url" content="https://chamber.wilhelm.codes/response-sizes/location-size-medium/">
+    <meta property="twitter:title" content="/size/medium | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="twitter:description" content="Demonstrates a response body of a predetermined size. This is useful for testing endpoints which which respond with various content lengths.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -196,21 +196,61 @@
                 <div id="docs-sidebar-right-toggle"></div>
                
                 <!-- Page content  -->
-<doc-anchor-target id="docs" class="break-words">
+<doc-anchor-target id="sizemedium" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#docs">#</doc-anchor-trigger>
-        <span>/docs</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#sizemedium">#</doc-anchor-trigger>
+        <span>/size/medium</span>
     </h1>
 </doc-anchor-target>
-<p>If you hit <a href="http://localhost:8000/docs">this</a> endpoint in your browser, you will be redirected to this <code v-pre>README.md</code> file:</p>
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Demonstrates a response body of a predetermined size. This is useful for testing endpoints which which respond with various content lengths.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with text:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/size/medium | jq -r '.'</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I http://localhost:8000/size/medium</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">String &quot;echo&quot; repeated 15,000 times.</div>
+<pre class="language-none"><code v-pre class="language-none">echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo </code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -i http://localhost:8000/docs
-HTTP/1.1 301 Moved Permanently
-Date: Mon, 25 Oct 2021 15:04:50 GMT
-Content-Type: text/html
-Content-Length: 166
-Connection: keep-alive
-Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md</code></pre>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /size/medium {
+  default_type text/html;
+  echo_duplicate 15_000 &quot;echo &quot;;
+}</code></pre>
 </doc-codeblock></div>
 
 
@@ -221,7 +261,7 @@ Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md</code><
             </div>
 
             <div class="flex flex-wrap items-center justify-between mt-14">
-    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/wilhelm-murdoch/chamber/blob/main/general-endpoints/location-docs.md" target="_blank" rel="noopener">
+    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/wilhelm-murdoch/chamber/blob/main/response-sizes/location-size-medium.md" target="_blank" rel="noopener">
         <svg class="mr-1.5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M20 12c-.55 0-1 .45-1 1v7c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h7c.55 0 1-.45 1-1s-.45-1-1-1H4C2.35 3 1 4.35 1 6v14c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-7c0-.55-.45-1-1-1z" /><path d="M22.21 1.79c-1.18-1.18-3.24-1.18-4.41 0l-9.5 9.5c-.13.13-.22.29-.26.46l-1 4c-.08.34.01.7.26.95.18.2.44.3.7.3.08 0 .16-.01.24-.03l4-1c.18-.04.34-.13.46-.26l9.5-9.5c1.22-1.22 1.22-3.2.01-4.42zm-1.42 3l-9.3 9.3-2.11.53.53-2.11 9.3-9.3c.42-.42 1.16-.42 1.59 0 .43.43.43 1.15-.01 1.58z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         <span>Edit this page</span>
     </a>
@@ -231,20 +271,20 @@ Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md</code><
 
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-auth/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/response-sizes/location-size-small/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">/auth</span>
+                <span class="block mt-1">/size/small</span>
             </span>
         </a>
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-echo/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/response-sizes/location-size-large/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">/echo</span>
+                <span class="block mt-1">/size/large</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -292,6 +332,6 @@ Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md</code><
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "/docs", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "/size/medium", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>
