@@ -13,7 +13,7 @@ Contributions are always welcome. Just create a PR and remember to be nice.
 Perform the following steps from the root of this repository's local working copy to build and run the server image locally:
 
 ```bash # 
-git@github.com:wilhelm-murdoch/chamber.git
+git clone git@github.com:wilhelm-murdoch/chamber.git
 cd chamber/
 git_sha=$(git rev-parse --short=8 HEAD)
 docker build --build-arg GIT_SHA="${git_sha}" -t ghcr.io/wilhelm-murdoch/chamber:latest . 

@@ -4,6 +4,10 @@ icon: home
 label: Welcome
 ---
 
+What is chamber?
+What is an echo server?
+Why would I use this?
+
 <img src="/static/chamber.gif" alt="drawing" style="width: 100%;" />
 
 An [OpenResty](https://openresty.org/)-based echo server for proxy and HTTP client testing.

@@ -9,9 +9,6 @@ branding:
 meta:
   title: " | A fully-featured OpenResty-based echo server for proxy and HTTP client testing."
 
-edit:
-  repo: github.com/wilhelm-murdoch/chamber
-
 links:
   - text: Home
     link: /index.md
