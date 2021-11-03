@@ -9,21 +9,21 @@
     <meta name="turbo-cache-control" content="no-cache">
 
     <!-- Primary Meta Tags -->
-    <title>/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
-    <meta name="title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both" />
+    <title>/code/5xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
+    <meta name="title" content="/code/5xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta name="description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
-    <meta property="og:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
+    <meta property="og:url" content="https://chamber.wilhelm.codes/http-response-codes/code-5xx/">
+    <meta property="og:title" content="/code/5xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="og:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
-    <meta property="twitter:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
+    <meta property="twitter:url" content="https://chamber.wilhelm.codes/http-response-codes/code-5xx/">
+    <meta property="twitter:title" content="/code/5xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="twitter:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -31,7 +31,6 @@
 
     <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689223248399" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -196,10 +195,10 @@
                 <div id="docs-sidebar-right-toggle"></div>
                
                 <!-- Page content  -->
-<doc-anchor-target id="auth" class="break-words">
+<doc-anchor-target id="code5xx" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#auth">#</doc-anchor-trigger>
-        <span>/auth</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#code5xx">#</doc-anchor-trigger>
+        <span>/code/5xx</span>
     </h1>
 </doc-anchor-target>
 <doc-anchor-target id="demonstration">
@@ -208,102 +207,6 @@
         <span>Demonstration</span>
     </h2>
 </doc-anchor-target>
-<p>Demonstrates an endpoint which supports <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication">basic authentication</a>. The default username and password are both <code v-pre>chamber</code> and a succesful attempt will display the landing page.</p>
-<doc-tabs>
-<doc-tab id="command">
-<template #title>Command</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with HTML:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber -I http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="headers">
-<template #title>Headers</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
-Date: Mon, 25 Oct 2021 14:37:21 GMT
-Content-Type: text/html
-Connection: keep-alive</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="html">
-<template #title>HTML</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">HTML body and css representing the landing page.</div>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;!DOCTYPE html&gt;&lt;html lang='en'&gt; ... &lt;/html&gt;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-</doc-tabs>
-<p>However, an unsuccessful attempt will result in the following response.</p>
-<doc-tabs>
-<doc-tab id="command">
-<template #title>Command</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with HTML:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp -I http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="headers">
-<template #title>Headers</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 401 Unauthorized
-Date: Mon, 25 Oct 2021 14:36:28 GMT
-Content-Type: text/html
-Content-Length: 176
-Connection: keep-alive
-WWW-Authenticate: Basic realm=&quot;Enter the Chamber&quot;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="html">
-<template #title>HTML</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">HTML body and css representing the landing page.</div>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;401 Authorization Required&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;center&gt;
-      &lt;h1&gt;401 Authorization Required&lt;/h1&gt;
-    &lt;/center&gt;
-    &lt;hr&gt;
-    &lt;center&gt;openresty&lt;/center&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-</doc-tabs>
-<doc-anchor-target id="custom-auth">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#custom-auth">#</doc-anchor-trigger>
-        <span>Custom Auth</span>
-    </h2>
-</doc-anchor-target>
-<p>You can customise the username and password using the following environmental variables:</p>
-<ul>
-<li><code v-pre>CHAMBER_BASIC_AUTH_USER</code>: The custom username.</li>
-<li><code v-pre>CHAMBER_BASIC_AUTH_PASSWORD</code>: The custom password.</li>
-</ul>
-<p>Pass them through with the <code v-pre>-e</code> flag when running the server like so:</p>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-bash"><code v-pre class="language-bash">export CHAMBER_BASIC_AUTH_USER=wilhelm
-export CHAMBER_BASIC_AUTH_PASSWORD=mypassword
-docker run -it --rm               \
-  --name chamber                  \
-  -p 8000:8000                    \
-  -e CHAMBER_BASIC_AUTH_USER      \
-  -e CHAMBER_BASIC_AUTH_PASSWORD= \
-  ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
-</doc-codeblock></div>
-<p>These will be picked up just before starting OpenResty and will be temporarily stored in <code v-pre>/etc/nginx/.htpasswd</code>. Restarting the container without these variables will restore this file to its default state.</p>
 <doc-anchor-target id="nginx-directive">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
@@ -313,13 +216,59 @@ docker run -it --rm               \
 <p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
-<pre class="language-none"><code v-pre class="language-none">location = /auth {
-  default_type text/html;
+<pre class="language-none"><code v-pre class="language-none">location = /code/500 {
+  default_type application/json;
+  return 500 '{&quot;code&quot;: 500,&quot;message&quot;: &quot;Internal Server Error&quot;, &quot;description&quot;: &quot;An error has occured in a server side script, a no more specific message is suitable.&quot;}';
+}
 
-  auth_basic &quot;Enter the Chamber&quot;;
-  auth_basic_user_file /etc/nginx/.htpasswd;
+location = /code/501 {
+  default_type application/json;
+  return 501 '{&quot;code&quot;: 501,&quot;message&quot;: &quot;Not Implemented&quot;, &quot;description&quot;: &quot;The server either does not recognize the request method, or it lacks the ability to fulfill the request.&quot;}';
+}
 
-  echo_location_async /;
+location = /code/502 {
+  default_type application/json;
+  return 502 '{&quot;code&quot;: 502,&quot;message&quot;: &quot;Bad Gateway&quot;, &quot;description&quot;: &quot;The server was acting as a gateway or proxy and received an invalid response from the upstream server.&quot;}';
+}
+
+location = /code/503 {
+  default_type application/json;
+  return 503 '{&quot;code&quot;: 503,&quot;message&quot;: &quot;Service Unavailable&quot;, &quot;description&quot;: &quot;The server is currently unavailable (overloaded or down).&quot;}';
+}
+
+location = /code/504 {
+  default_type application/json;
+  return 504 '{&quot;code&quot;: 504,&quot;message&quot;: &quot;Gateway Timeout&quot;, &quot;description&quot;: &quot;The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.&quot;}';
+}
+
+location = /code/505 {
+  default_type application/json;
+  return 505 '{&quot;code&quot;: 505,&quot;message&quot;: &quot;HTTP Version Not Supported&quot;, &quot;description&quot;: &quot;The server does not support the HTTP protocol version used in the request.&quot;}';
+}
+
+location = /code/506 {
+  default_type application/json;
+  return 506 '{&quot;code&quot;: 506,&quot;message&quot;: &quot;Variant Also Negotiates&quot;, &quot;description&quot;: &quot;Transparent content negotiation for the request results in a circular reference.&quot;}';
+}
+
+location = /code/507 {
+  default_type application/json;
+  return 507 '{&quot;code&quot;: 507,&quot;message&quot;: &quot;Insufficient Storage&quot;, &quot;description&quot;: &quot;The server is unable to store the representation needed to complete the request.&quot;}';
+}
+
+location = /code/508 {
+  default_type application/json;
+  return 508 '{&quot;code&quot;: 508,&quot;message&quot;: &quot;Loop Detected&quot;, &quot;description&quot;: &quot;The server detected an infinite loop while processing the request (sent instead of 208 Already Reported).&quot;}';
+}
+
+location = /code/510 {
+  default_type application/json;
+  return 510 '{&quot;code&quot;: 510,&quot;message&quot;: &quot;Not Extended&quot;, &quot;description&quot;: &quot;Further extensions to the request are required for the server to fulfil it.&quot;}';
+}
+
+location = /code/511 {
+  default_type application/json;
+  return 511 '{&quot;code&quot;: 511,&quot;message&quot;: &quot;Network Authentication Required&quot;, &quot;description&quot;: &quot;The client needs to authenticate to gain network access.&quot;}';
 }</code></pre>
 </doc-codeblock></div>
 
@@ -333,20 +282,20 @@ docker run -it --rm               \
             
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-slash/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/code-4xx/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">/</span>
+                <span class="block mt-1">/code/4xx</span>
             </span>
         </a>
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-docs/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/code-/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">/docs</span>
+                <span class="block mt-1">/code/???</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -394,6 +343,6 @@ docker run -it --rm               \
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "/auth", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "/code/5xx", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>

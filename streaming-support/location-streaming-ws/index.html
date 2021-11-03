@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689185010775" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689223248399" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689185010775" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689185010775" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689223248399" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,26 +202,57 @@
         <span>/streaming/ws</span>
     </h1>
 </doc-anchor-target>
-<p>Exposes a websocket server endpoint used for echoing back data for testing. This can be used for end-to-end testing of new clients.</p>
-<p>Using curl you can recieve a stream of JSON-formatted data until you terminate the connection:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl \
-    --include \
-    --no-buffer \
-    --header &quot;Connection: Upgrade&quot; \
-    --header &quot;Upgrade: websocket&quot; \
-    --header &quot;Host: localhost:8000&quot; \
-    --header &quot;Origin: http://localhost:8000&quot; \
-    --header &quot;Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQAAAA==&quot; \
-    --header &quot;Sec-WebSocket-Version: 13&quot; \
-    http://localhost:8000/streaming/ws
-HTTP/1.1 101 Switching Protocols
-Date: Mon, 01 Nov 2021 07:28:23 GMT
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Exposes a websocket server endpoint used for echoing back data for testing. This can be used for end-to-end testing of new clients. Hitting this endpoint will yield a stream of events spaced <code v-pre>1</code> second apart.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Use the -N flag to disable buffering:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl                                                     \
+  --no-buffer                                            \
+  --header &quot;Connection: Upgrade&quot;                         \
+  --header &quot;Upgrade: websocket&quot;                          \
+  --header &quot;Host: localhost:8000&quot;                        \
+  --header &quot;Origin: http://localhost:8000&quot;               \
+  --header &quot;Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQAAAA==&quot; \
+  --header &quot;Sec-WebSocket-Version: 13&quot;                   \
+  http://localhost:8000/streaming/ws</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl                                                     \
+  -I                                                     \
+  --no-buffer                                            \
+  --header &quot;Connection: Upgrade&quot;                         \
+  --header &quot;Upgrade: websocket&quot;                          \
+  --header &quot;Host: localhost:8000&quot;                        \
+  --header &quot;Origin: http://localhost:8000&quot;               \
+  --header &quot;Sec-WebSocket-Key: SGVsbG8sIHdvcmxkIQAAAA==&quot; \
+  --header &quot;Sec-WebSocket-Version: 13&quot;                   \
+  http://localhost:8000/streaming/ws</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 101 Switching Protocols
+Date: Wed, 03 Nov 2021 02:33:43 GMT
 Connection: upgrade
 Upgrade: websocket
-Sec-WebSocket-Accept: 5Tz1rM6Lpj3X4PQub3+HhJRM11s=
-
-{&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;034d246aed02e1f20cbfc3d7bcea33d9&quot;, &quot;time&quot;: 1635751704.823}
+Sec-WebSocket-Accept: 5Tz1rM6Lpj3X4PQub3+HhJRM11s=</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">A list of events:</div>
+<pre class="language-bash"><code v-pre class="language-bash">{&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;034d246aed02e1f20cbfc3d7bcea33d9&quot;, &quot;time&quot;: 1635751704.823}
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;22d34562bd93f247463791a1e45cec2c&quot;, &quot;time&quot;: 1635751705.831}
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;24bab0ad4039e931b37ac587e5d8a3b1&quot;, &quot;time&quot;: 1635751706.838}
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;16fb6c6b47da79648102d1ca7e66587e&quot;, &quot;time&quot;: 1635751707.844}
@@ -230,12 +261,140 @@ Sec-WebSocket-Accept: 5Tz1rM6Lpj3X4PQub3+HhJRM11s=
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;11430f7e525d40b2da5aa3e4ff1a1aea&quot;, &quot;time&quot;: 1635751710.855}
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;ebc30ab1048c6b05f6534e2c21d235c4&quot;, &quot;time&quot;: 1635751711.862}</code></pre>
 </doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="using-websocat">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#using-websocat">#</doc-anchor-trigger>
+        <span>Using Websocat</span>
+    </h3>
+</doc-anchor-target>
 <p>You can also use <a href="https://github.com/vi/websocat"><code v-pre>websocat</code></a> as a command line websocket client to echo back messages:</p>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ echo 'Hello, world!' | websocat ws://localhost:8000/streaming/ws
-{&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;7a1331c5c1416b72116fc29c5c1577e4&quot;, &quot;time&quot;: 1635751909.352}
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Pipe text into the command:</div>
+<pre class="language-bash"><code v-pre class="language-bash">echo 'Hello, world!' | websocat ws://localhost:8000/streaming/ws</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Your message echoed back:</div>
+<pre class="language-bash"><code v-pre class="language-bash">{&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;7a1331c5c1416b72116fc29c5c1577e4&quot;, &quot;time&quot;: 1635751909.352}
 {&quot;type&quot;: &quot;message&quot;, &quot;Hello, world! &quot;}
 {&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;0b587cc77c47399864d9a4dbd0854dbd&quot;, &quot;time&quot;: 1635751909.352}</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="event-attributes">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#event-attributes">#</doc-anchor-trigger>
+        <span>Event Attributes</span>
+    </h2>
+</doc-anchor-target>
+<p>Event entries contain the following values:</p>
+<table class="comfortable">
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code v-pre>type</code></td>
+<td>The type of event being returned. <code v-pre>default: info</code></td>
+</tr>
+<tr>
+<td><code v-pre>id</code></td>
+<td>A unique identifier representing the current request id. <code v-pre>default: ngx.var.request_id</code></td>
+</tr>
+<tr>
+<td><code v-pre>time</code></td>
+<td>A timestamp representing the server&#x27;s current time. <code v-pre>default: ngx.now()</code></td>
+</tr>
+</tbody>
+</table>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /streaming/ws {
+  content_by_lua_block {
+    local server = require 'resty.websocket.server'
+
+    local response = {
+      info = function()
+        return string.format('{&quot;type&quot;: &quot;info&quot;, &quot;id&quot;: &quot;%s&quot;, &quot;time&quot;: %s}', ngx.var.request_id, ngx.now())
+      end,
+
+      message = function(message)
+        return string.format('{&quot;type&quot;: &quot;message&quot;, &quot;%s&quot;}', message)
+      end
+    }
+
+    local wb, err = server:new{
+      timeout = 5000,
+      max_payload_len = 32768
+    }
+
+    if not wb then
+      ngx.log(ngx.ERR, string.format('Failed to create new websocket: %s', err))
+      return ngx.exit(444)
+    end
+
+    while true do
+      local data, typ, err = wb:recv_frame()
+
+      if not data and not string.find(err, 'timeout', 1, true) then
+        ngx.log(ngx.ERR, string.format('Failed to receive a frame: %s', err))
+        return ngx.exit(444)
+      end
+
+      wb:send_text(response.info())
+
+      local switch = {
+        close = function()
+          wb:send_close(1000)
+        end,
+
+        ping = function()
+          local bytes, err = wb:send_pong(data)
+          if not bytes then
+            ngx.log(ngx.ERR, string.format('Failed to send frame: %s', err))
+            return
+          end
+        end,
+
+        text = function()
+          wb:send_text(response.message(data))
+        end
+      }
+
+      if typ then
+        ngx.log(ngx.INFO, string.format('Received a frame of type %s and payload %s', typ, data))
+      end
+
+      if typ == 'close' then
+        break
+      end
+
+      if switch[typ] then
+        switch[typ]()
+      end
+    end
+
+    wb:send_close()
+    ngx.exit(ngx.HTTP_OK)
+  }
+}</code></pre>
 </doc-codeblock></div>
 
 
@@ -245,15 +404,7 @@ Sec-WebSocket-Accept: 5Tz1rM6Lpj3X4PQub3+HhJRM11s=
                 <doc-toolbar-member-filter-no-results />
             </div>
 
-            <div class="flex flex-wrap items-center justify-between mt-14">
-    <a class="my-2.5 inline-flex items-center text-sm whitespace-nowrap text-blue-500 dark:text-blue-400 hover:text-blue-700 hover:underline" href="https://github.com/wilhelm-murdoch/chamber/blob/main/streaming-support/location-streaming-ws.md" target="_blank" rel="noopener">
-        <svg class="mr-1.5" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M20 12c-.55 0-1 .45-1 1v7c0 .55-.45 1-1 1H4c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h7c.55 0 1-.45 1-1s-.45-1-1-1H4C2.35 3 1 4.35 1 6v14c0 1.65 1.35 3 3 3h14c1.65 0 3-1.35 3-3v-7c0-.55-.45-1-1-1z" /><path d="M22.21 1.79c-1.18-1.18-3.24-1.18-4.41 0l-9.5 9.5c-.13.13-.22.29-.26.46l-1 4c-.08.34.01.7.26.95.18.2.44.3.7.3.08 0 .16-.01.24-.03l4-1c.18-.04.34-.13.46-.26l9.5-9.5c1.22-1.22 1.22-3.2.01-4.42zm-1.42 3l-9.3 9.3-2.11.53.53-2.11 9.3-9.3c.42-.42 1.16-.42 1.59 0 .43.43.43 1.15-.01 1.58z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
-        <span>Edit this page</span>
-    </a>
-
-    <!--<p class="my-2.5 text-gray-500 dark:text-dark-350 text-sm">Last updated on <strong>2021-03-14</strong> by <strong>Geoffrey McGill</strong></p>-->
-</div>
-
+            
 <nav class="flex mt-14">
     <div class="w-1/2">
         <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/streaming-support/location-streaming-sse/">
@@ -266,10 +417,10 @@ Sec-WebSocket-Accept: 5Tz1rM6Lpj3X4PQub3+HhJRM11s=
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/code-1xx/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">HTTP Response Codes</span>
+                <span class="block mt-1">/code/1xx</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>

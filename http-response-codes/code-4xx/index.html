@@ -9,21 +9,21 @@
     <meta name="turbo-cache-control" content="no-cache">
 
     <!-- Primary Meta Tags -->
-    <title>/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
-    <meta name="title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both" />
+    <title>/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
+    <meta name="title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta name="description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
-    <meta property="og:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
+    <meta property="og:url" content="https://chamber.wilhelm.codes/http-response-codes/code-4xx/">
+    <meta property="og:title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="og:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-auth/">
-    <meta property="twitter:title" content="/auth | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Demonstrates an endpoint which supports basic authentication. The default username and password are both">
+    <meta property="twitter:url" content="https://chamber.wilhelm.codes/http-response-codes/code-4xx/">
+    <meta property="twitter:title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
+    <meta property="twitter:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -31,7 +31,6 @@
 
     <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689223248399" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -196,10 +195,10 @@
                 <div id="docs-sidebar-right-toggle"></div>
                
                 <!-- Page content  -->
-<doc-anchor-target id="auth" class="break-words">
+<doc-anchor-target id="code4xx" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#auth">#</doc-anchor-trigger>
-        <span>/auth</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#code4xx">#</doc-anchor-trigger>
+        <span>/code/4xx</span>
     </h1>
 </doc-anchor-target>
 <doc-anchor-target id="demonstration">
@@ -208,102 +207,6 @@
         <span>Demonstration</span>
     </h2>
 </doc-anchor-target>
-<p>Demonstrates an endpoint which supports <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication">basic authentication</a>. The default username and password are both <code v-pre>chamber</code> and a succesful attempt will display the landing page.</p>
-<doc-tabs>
-<doc-tab id="command">
-<template #title>Command</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with HTML:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u chamber:chamber -I http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="headers">
-<template #title>Headers</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
-Date: Mon, 25 Oct 2021 14:37:21 GMT
-Content-Type: text/html
-Connection: keep-alive</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="html">
-<template #title>HTML</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">HTML body and css representing the landing page.</div>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;!DOCTYPE html&gt;&lt;html lang='en'&gt; ... &lt;/html&gt;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-</doc-tabs>
-<p>However, an unsuccessful attempt will result in the following response.</p>
-<doc-tabs>
-<doc-tab id="command">
-<template #title>Command</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with HTML:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">curl -u herp:derp -I http://localhost:8000/auth</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="headers">
-<template #title>Headers</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 401 Unauthorized
-Date: Mon, 25 Oct 2021 14:36:28 GMT
-Content-Type: text/html
-Content-Length: 176
-Connection: keep-alive
-WWW-Authenticate: Basic realm=&quot;Enter the Chamber&quot;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-<doc-tab id="html">
-<template #title>HTML</template>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<div class="codeblock-title">HTML body and css representing the landing page.</div>
-<pre class="language-markup"><code v-pre class="language-markup">&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;401 Authorization Required&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;center&gt;
-      &lt;h1&gt;401 Authorization Required&lt;/h1&gt;
-    &lt;/center&gt;
-    &lt;hr&gt;
-    &lt;center&gt;openresty&lt;/center&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</doc-codeblock></div>
-</doc-tab>
-</doc-tabs>
-<doc-anchor-target id="custom-auth">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#custom-auth">#</doc-anchor-trigger>
-        <span>Custom Auth</span>
-    </h2>
-</doc-anchor-target>
-<p>You can customise the username and password using the following environmental variables:</p>
-<ul>
-<li><code v-pre>CHAMBER_BASIC_AUTH_USER</code>: The custom username.</li>
-<li><code v-pre>CHAMBER_BASIC_AUTH_PASSWORD</code>: The custom password.</li>
-</ul>
-<p>Pass them through with the <code v-pre>-e</code> flag when running the server like so:</p>
-<div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-bash"><code v-pre class="language-bash">export CHAMBER_BASIC_AUTH_USER=wilhelm
-export CHAMBER_BASIC_AUTH_PASSWORD=mypassword
-docker run -it --rm               \
-  --name chamber                  \
-  -p 8000:8000                    \
-  -e CHAMBER_BASIC_AUTH_USER      \
-  -e CHAMBER_BASIC_AUTH_PASSWORD= \
-  ghcr.io/wilhelm-murdoch/chamber:latest</code></pre>
-</doc-codeblock></div>
-<p>These will be picked up just before starting OpenResty and will be temporarily stored in <code v-pre>/etc/nginx/.htpasswd</code>. Restarting the container without these variables will restore this file to its default state.</p>
 <doc-anchor-target id="nginx-directive">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
@@ -313,13 +216,149 @@ docker run -it --rm               \
 <p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
-<pre class="language-none"><code v-pre class="language-none">location = /auth {
-  default_type text/html;
+<pre class="language-none"><code v-pre class="language-none">location = /code/400 {
+  default_type application/json;
+  return 400 '{&quot;code&quot;: 400,&quot;message&quot;: &quot;Bad Request&quot;, &quot;description&quot;: &quot;The request cannot be fulfilled due to bad syntax.&quot;}';
+}
 
-  auth_basic &quot;Enter the Chamber&quot;;
-  auth_basic_user_file /etc/nginx/.htpasswd;
+location = /code/401 {
+  default_type application/json;
+  return 401 '{&quot;code&quot;: 401,&quot;message&quot;: &quot;Unauthorized&quot;, &quot;description&quot;: &quot;The request was a legal request, but the server is refusing to respond to it. For use when authentication is possible but has failed or not yet been provided.&quot;}';
+}
 
-  echo_location_async /;
+location = /code/402 {
+  default_type application/json;
+  return 402 '{&quot;code&quot;: 402,&quot;message&quot;: &quot;Payment Required&quot;, &quot;description&quot;: &quot;-- Reserved for future use --.&quot;}';
+}
+
+location = /code/403 {
+  default_type application/json;
+  return 403 '{&quot;code&quot;: 403,&quot;message&quot;: &quot;Forbidden&quot;, &quot;description&quot;: &quot;The request was a legal request, but the server is refusing to respond to it.&quot;}';
+}
+
+location = /code/404 {
+  default_type application/json;
+  return 404 '{&quot;code&quot;: 404,&quot;message&quot;: &quot;Not Found&quot;, &quot;description&quot;: &quot;The requested page could not be found but may be available again in the future.&quot;}';
+}
+
+location = /code/405 {
+  default_type application/json;
+  return 405 '{&quot;code&quot;: 405,&quot;message&quot;: &quot;Method Not Allowed&quot;, &quot;description&quot;: &quot;A request was made of a page using a request method not supported by that page.&quot;}';
+}
+
+location = /code/406 {
+  default_type application/json;
+  return 406 '{&quot;code&quot;: 406,&quot;message&quot;: &quot;Not Acceptable&quot;, &quot;description&quot;: &quot;The server can only generate a response that is not accepted by the client.&quot;}';
+}
+
+location = /code/407 {
+  default_type application/json;
+  return 407 '{&quot;code&quot;: 407,&quot;message&quot;: &quot;Proxy Authentication Required&quot;, &quot;description&quot;: &quot;The client must first authenticate itself with the proxy.&quot;}';
+}
+
+location = /code/408 {
+  default_type application/json;
+  return 408 '{&quot;code&quot;: 408,&quot;message&quot;: &quot;Request Timeout&quot;, &quot;description&quot;: &quot;The server timed out waiting for the request.&quot;}';
+}
+
+location = /code/409 {
+  default_type application/json;
+  return 409 '{&quot;code&quot;: 409,&quot;message&quot;: &quot;Conflict&quot;, &quot;description&quot;: &quot;The request could not be completed because of a conflict in the request.&quot;}';
+}
+
+location = /code/410 {
+  default_type application/json;
+  return 410 '{&quot;code&quot;: 410,&quot;message&quot;: &quot;Gone&quot;, &quot;description&quot;: &quot;The requested page is no longer available.&quot;}';
+}
+
+location = /code/411 {
+  default_type application/json;
+  return 411 '{&quot;code&quot;: 411,&quot;message&quot;: &quot;Length Required&quot;, &quot;description&quot;: &quot;The &quot;Content-Length&quot; is not defined. The server will not accept the request without it.&quot;}';
+}
+
+location = /code/412 {
+  default_type application/json;
+  return 412 '{&quot;code&quot;: 412,&quot;message&quot;: &quot;Precondition Failed&quot;, &quot;description&quot;: &quot;The precondition given in the request evaluated to false by the server.&quot;}';
+}
+
+location = /code/413 {
+  default_type application/json;
+  return 413 '{&quot;code&quot;: 413,&quot;message&quot;: &quot;Request Entity Too Large&quot;, &quot;description&quot;: &quot;The server will not accept the request, because the request entity is too large.&quot;}';
+}
+
+location = /code/414 {
+  default_type application/json;
+  return 414 '{&quot;code&quot;: 414,&quot;message&quot;: &quot;Request-URI Too Long&quot;, &quot;description&quot;: &quot;The server will not accept the request, because the URL is too long. Occurs when you convert a POST request to a GET request with a long query information.&quot;}';
+}
+
+location = /code/415 {
+  default_type application/json;
+  return 415 '{&quot;code&quot;: 415,&quot;message&quot;: &quot;Unsupported Media Type&quot;, &quot;description&quot;: &quot;The server will not accept the request, because the media type is not supported.&quot;}';
+}
+
+location = /code/416 {
+  default_type application/json;
+  return 416 '{&quot;code&quot;: 416,&quot;message&quot;: &quot;Requested Range Not Satisfiable&quot;, &quot;description&quot;: &quot;The client has asked for a portion of the file, but the server cannot supply that portion.&quot;}';
+}
+
+location = /code/417 {
+  default_type application/json;
+  return 417 '{&quot;code&quot;: 417,&quot;message&quot;: &quot;Expectation Failed&quot;, &quot;description&quot;: &quot;The server cannot meet the requirements of the Expect request-header field.&quot;}';
+}
+
+location = /code/418 {
+  default_type application/json;
+  return 418 '{&quot;code&quot;: 418,&quot;message&quot;: &quot;I\'m a teapot&quot;, &quot;description&quot;: &quot;Any attempt to brew coffee with a teapot should result in the error code 418 I\'m a teapot. The resulting entity body MAY be short and stout.&quot;}';
+}
+
+location = /code/421 {
+  default_type application/json;
+  return 421 '{&quot;code&quot;: 421,&quot;message&quot;: &quot;Misdirected Request&quot;, &quot;description&quot;: &quot;The request was directed at a server that is not able to produce a response (for example because a connection reuse).&quot;}';
+}
+
+location = /code/422 {
+  default_type application/json;
+  return 422 '{&quot;code&quot;: 422,&quot;message&quot;: &quot;Unprocessable Entity&quot;, &quot;description&quot;: &quot;The request was well-formed but was unable to be followed due to semantic errors.&quot;}';
+}
+
+location = /code/423 {
+  default_type application/json;
+  return 423 '{&quot;code&quot;: 423,&quot;message&quot;: &quot;Locked&quot;, &quot;description&quot;: &quot;The resource that is being accessed is locked.&quot;}';
+}
+
+location = /code/424 {
+  default_type application/json;
+  return 424 '{&quot;code&quot;: 424,&quot;message&quot;: &quot;Failed Dependency&quot;, &quot;description&quot;: &quot;The request failed due to failure of a previous request (e.g., a PROPPATCH).&quot;}';
+}
+
+location = /code/425 {
+  default_type application/json;
+  return 425 '{&quot;code&quot;: 425,&quot;message&quot;: &quot;Too Early&quot;, &quot;description&quot;: &quot;Indicates that the server is unwilling to risk processing a request that might be replayed.&quot;}';
+}
+
+location = /code/426 {
+  default_type application/json;
+  return 426 '{&quot;code&quot;: 426,&quot;message&quot;: &quot;Upgrade Required&quot;, &quot;description&quot;: &quot;The client should switch to a different protocol such as TLS/1.0, given in the Upgrade header field.&quot;}';
+}
+
+location = /code/428 {
+  default_type application/json;
+  return 428 '{&quot;code&quot;: 428,&quot;message&quot;: &quot;Precondition Required&quot;, &quot;description&quot;: &quot;The origin server requires the request to be conditional.&quot;}';
+}
+
+location = /code/429 {
+  default_type application/json;
+  return 429 '{&quot;code&quot;: 429,&quot;message&quot;: &quot;Too Many Requests&quot;, &quot;description&quot;: &quot;The user has sent too many requests in a given amount of time. Intended for use with rate limiting schemes.&quot;}';
+}
+
+location = /code/431 {
+  default_type application/json;
+  return 431 '{&quot;code&quot;: 431,&quot;message&quot;: &quot;Request Header Fields Too Large&quot;, &quot;description&quot;: &quot;The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.&quot;}';
+}
+
+location = /code/451 {
+  default_type application/json;
+  return 451 '{&quot;code&quot;: 451,&quot;message&quot;: &quot;Unavailable For Legal Reasons&quot;, &quot;description&quot;: &quot;A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource.&quot;}';
 }</code></pre>
 </doc-codeblock></div>
 
@@ -333,20 +372,20 @@ docker run -it --rm               \
             
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-slash/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/code-3xx/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">/</span>
+                <span class="block mt-1">/code/3xx</span>
             </span>
         </a>
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/general-endpoints/location-docs/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/http-response-codes/code-5xx/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">/docs</span>
+                <span class="block mt-1">/code/5xx</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -394,6 +433,6 @@ docker run -it --rm               \
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "/auth", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "/code/4xx", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>
