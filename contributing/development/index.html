@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689223248399" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689245819971" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689245819971" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689223248399" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689245819971" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -233,7 +233,7 @@ cd chamber/
 git_sha=$(git rev-parse --short=8 HEAD)
 docker build --build-arg GIT_SHA=&quot;${git_sha}&quot; -t ghcr.io/wilhelm-murdoch/chamber:latest . </code></pre>
 </doc-codeblock></div>
-<p>We pass <code v-pre>$(git rev-parse --short=8 HEAD)</code> through to the build process using a <code v-pre>--build-arg</code> to write the release to a file stored within the resulting image. This content of this file is used by the <code v-pre>/up</code> endpoint.</p>
+<p>We pass <code v-pre>$(git rev-parse --short=8 HEAD)</code> through to the build process using a <code v-pre>--build-arg</code> to write the release to a file stored within the resulting image. The content of this file is used by the <code v-pre>/up</code> endpoint.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <div class="codeblock-title">Dockerfile</div>
 <pre class="language-none"><code v-pre class="language-none">ARG GIT_SHA
@@ -298,7 +298,7 @@ RUN echo &quot;chamber release: ${GIT_SHA}&quot; &gt; /.git_sha</code></pre>
 </doc-anchor-target>
 <p>This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you&#x27;re a maintainer of this project, you can easily bypass this process.</p>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-bash"><code v-pre class="language-bash">git@github.com:wilhelm-murdoch/chamber.git
+<pre class="language-bash"><code v-pre class="language-bash">git clone git@github.com:wilhelm-murdoch/chamber.git
 cd chamber/
 echo &quot;${GITHUB_TOKEN}&quot; | docker login ghcr.io -u USERNAME --password-stdin
 git_sha=$(git rev-parse --short=8 HEAD)

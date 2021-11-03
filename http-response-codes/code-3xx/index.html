@@ -11,26 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/code/3xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/code/3xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration" />
+    <meta name="description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/http-response-codes/code-3xx/">
     <meta property="og:title" content="/code/3xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
+    <meta property="og:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/http-response-codes/code-3xx/">
     <meta property="twitter:title" content="/code/3xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="This is the directive responsible for this endpoint's behaviour. You can read the entirety of the configuration">
+    <meta property="twitter:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689223248399" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689245819971" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689245819971" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689245819971" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -207,6 +208,79 @@
         <span>Demonstration</span>
     </h2>
 </doc-anchor-target>
+<p>Demonstrates server responses from the <code v-pre>HTTP/1.1 1xx</code> series of codes.</p>
+<doc-anchor-target id="definition">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#definition">#</doc-anchor-trigger>
+        <span>Definition</span>
+    </h3>
+</doc-anchor-target>
+<blockquote>
+<p>This class of status code indicates the client must take additional action to complete the request. Many of these status codes are used in URL redirection.</p>
+</blockquote>
+<p>
+<div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
+    <div class="flex items-center text-blue-500 dark:text-blue-400">
+        <span class="inline-block mb-px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" role="presentation" fill="currentColor"><path fill-rule="evenodd" d="M12.292 2.06a.75.75 0 00-.584 0L.458 6.81a.75.75 0 000 1.38L4.25 9.793v3.803a2.901 2.901 0 00-1.327.757c-.579.58-.923 1.41-.923 2.43v4.5c0 .248.128.486.335.624.06.04.117.073.22.124.124.062.297.138.52.213.448.149 1.09.288 1.925.288s1.477-.14 1.925-.288c.223-.075.396-.15.52-.213a2.11 2.11 0 00.21-.117A.762.762 0 008 21.28v-4.5c0-1.018-.344-1.85-.923-2.428a2.9 2.9 0 00-1.327-.758v-3.17l5.958 2.516a.75.75 0 00.584 0l5.208-2.2v4.003a2.552 2.552 0 01-.079.085 4.057 4.057 0 01-.849.65c-.826.488-2.255 1.021-4.572 1.021-.612 0-1.162-.037-1.654-.1a.75.75 0 00-.192 1.487c.56.072 1.173.113 1.846.113 2.558 0 4.254-.592 5.334-1.23.538-.316.914-.64 1.163-.896a2.84 2.84 0 00.392-.482h.001A.75.75 0 0019 15v-4.892l4.542-1.917a.75.75 0 000-1.382l-11.25-4.75zM5 15c-.377 0-.745.141-1.017.413-.265.265-.483.7-.483 1.368v4.022c.299.105.797.228 1.5.228s1.201-.123 1.5-.228V16.78c0-.669-.218-1.103-.483-1.368A1.431 1.431 0 005 15zm7-3.564L2.678 7.5 12 3.564 21.322 7.5 12 11.436z"/></svg>
+        </span>
+        <span class="inline-block font-medium ml-2">From Wikipedia</span>
+    </div>
+    <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
+        <span>https://shorturl.at/aklzB</span>
+    </div>
+    <a href="https://shorturl.at/aklzB" target="_blank" class="absolute block inset-0"></a>
+</div>
+</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+  curl -s http://localhost:8000/code/$code | jq -r '.'
+done</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+  curl -I http://localhost:8000/code/$code
+done</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 100 
+Date: Wed, 03 Nov 2021 04:06:49 GMT
+Content-Type: application/json
+Content-Length: 154
+Connection: keep-alive
+
+HTTP/1.1 102 
+Date: Wed, 03 Nov 2021 04:07:03 GMT
+Content-Type: application/json
+Content-Length: 290
+Connection: keep-alive</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Various response bodies:</div>
+<pre class="language-json"><code v-pre class="language-json">{
+  &quot;code&quot;: 100,
+  &quot;message&quot;: &quot;Continue&quot;,
+  &quot;description&quot;: &quot;The server has received the request headers, and the client should proceed to send the request body.&quot;
+}
+{
+  &quot;code&quot;: 102,
+  &quot;message&quot;: &quot;Processing&quot;,
+  &quot;description&quot;: &quot;A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet.&quot;
+}</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
 <doc-anchor-target id="nginx-directive">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
@@ -333,6 +407,6 @@ location = /code/308 {
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "/code/3xx", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "/code/3xx", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>

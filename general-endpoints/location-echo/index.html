@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/echo | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/echo | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Will return a JSON object containing the following values:" />
+    <meta name="description" content="Arguably the most important feature of an echo server is to actually support echoing with the most common types of requests;" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/general-endpoints/location-echo/">
     <meta property="og:title" content="/echo | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Will return a JSON object containing the following values:">
+    <meta property="og:description" content="Arguably the most important feature of an echo server is to actually support echoing with the most common types of requests;">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/general-endpoints/location-echo/">
     <meta property="twitter:title" content="/echo | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Will return a JSON object containing the following values:">
+    <meta property="twitter:description" content="Arguably the most important feature of an echo server is to actually support echoing with the most common types of requests;">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689223248399" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689245819971" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689223248399" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689245819971" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689223248399" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689245819971" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -202,21 +202,42 @@
         <span>/echo</span>
     </h1>
 </doc-anchor-target>
-<p>Will return a JSON object containing the following values:</p>
-<ol>
-<li>Request headers.</li>
-<li>Any <code v-pre>GET</code> parameters.</li>
-<li>Any <code v-pre>POST</code> parameters.</li>
-<li>The raw <code v-pre>POST</code> body, if present.</li>
-</ol>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -i http://localhost:8000/echo?param=foo&amp;param=bar&amp;merp&amp;flakes=meep --data &quot;email=me@mysite.com&amp;password=***&quot;
-HTTP/1.1 200 OK
+<doc-anchor-target id="demonstration">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#demonstration">#</doc-anchor-trigger>
+        <span>Demonstration</span>
+    </h2>
+</doc-anchor-target>
+<p>Arguably the most important feature of an echo server is to actually support <em>echoing</em> with the most common types of requests; <code v-pre>GET</code>, <code v-pre>POST</code> and the rest.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with JSON:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s \
+  --data &quot;email=me@mysite.com&amp;password=***&quot;\
+  http://localhost:8000/echo?param=foo&amp;param=bar&amp;merp&amp;flakes=meep | jq -r '.'</code></pre>
+</doc-codeblock></div>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">Respond with headers:</div>
+<pre class="language-bash"><code v-pre class="language-bash">curl -I \
+  --data &quot;email=me@mysite.com&amp;password=***&quot; \
+  http://localhost:8000/echo?param=foo&amp;param=bar&amp;merp&amp;flakes=meep </code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="headers">
+<template #title>Headers</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 200 OK
 Date: Mon, 25 Oct 2021 14:56:43 GMT
 Content-Type: text/html
-Connection: close
-
-{
+Connection: close</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="json">
+<template #title>JSON</template>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-json"><code v-pre class="language-json">{
   &quot;headers&quot;: [
     {
       &quot;key&quot;: &quot;USER-AGENT&quot;,
@@ -271,11 +292,182 @@ Connection: close
   &quot;body&quot;: &quot;email=me@mysite.com&amp;password=***&quot;
 }</code></pre>
 </doc-codeblock></div>
-<p>For <code v-pre>GET</code> and <code v-pre>POST</code> requests, multiple values assigned to the same key will be represented as a list of values.</p>
-<p>If you wish to tell the server to echo back a string, you can do something like the following:</p>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="response-details">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#response-details">#</doc-anchor-trigger>
+        <span>Response Details</span>
+    </h2>
+</doc-anchor-target>
+<p>This endpoint will respond to any request with the following data represented as a JSON object:</p>
+<ol>
+<li>All original request headers.</li>
+<li>Any <code v-pre>GET</code> parameters.</li>
+<li>Any <code v-pre>POST</code> parameters.</li>
+<li>The raw <code v-pre>POST</code> body, if present.</li>
+</ol>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<div class="codeblock-title">A response will conform to some variation of the following structure:</div>
+<pre class="language-json"><code v-pre class="language-json">{
+  &quot;headers&quot;: [ 
+    { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: &quot;&lt;value&gt;&quot; }, // An object for each request header
+  ], 
+  &quot;params&quot;: {
+    &quot;get&quot;: [ // An object for each get param
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: true|false },
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: &quot;&lt;value&gt;&quot; },
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: [ &quot;&lt;value&gt;&quot;, &quot;&lt;value&gt;&quot; ] },
+    ],
+    &quot;post&quot;: [ // An object for each post param
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: true|false },
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: &quot;&lt;value&gt;&quot; },
+      { &quot;key&quot;: &quot;&lt;name&gt;&quot;, &quot;value&quot;: [ &quot;&lt;value&gt;&quot;, &quot;&lt;value&gt;&quot; ] },
+    ]
+  },
+  &quot;body&quot;: &quot;&lt;value&gt;&quot; // The raw post body if there is one
+}</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="parameter-variations">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#parameter-variations">#</doc-anchor-trigger>
+        <span>Parameter Variations</span>
+    </h3>
+</doc-anchor-target>
+<p>The structure of the response body will vary based on the format of your <code v-pre>POST</code> and <code v-pre>GET</code> parameters. The following examples will use <code v-pre>GET</code> parameters, but the same rules apply for <code v-pre>POST</code> bodies.</p>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<p>Assigning multiple distinct values to the same key.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/echo?foo=one&amp;foo=two | jq -r '.params.get'</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<p>Assigning multiple distinct values to the same key.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-json"><code v-pre class="language-json">[
+  {
+    &quot;key&quot;: &quot;foo&quot;,
+    &quot;value&quot;: [
+      &quot;one&quot;,
+      &quot;two&quot;
+    ]
+  }
+]</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<p>Assigning no values to a key will result in a boolean value.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/echo?foo&amp;bar | jq -r '.params.get'</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<p>Assigning no values to a key will result in a boolean value.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-json"><code v-pre class="language-json">[
+  {
+    &quot;key&quot;: &quot;foo&quot;,
+    &quot;value&quot;: &quot;true&quot;
+  },
+  {
+    &quot;key&quot;: &quot;bar&quot;,
+    &quot;value&quot;: &quot;true&quot;
+  }
+]</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-tabs>
+<doc-tab id="command">
+<template #title>Command</template>
+<p>You can, of course, mix and match parameters.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-bash"><code v-pre class="language-bash">curl -s http://localhost:8000/echo?foo&amp;bar&amp;baz=one&amp;baz=two&amp;merp=flakes | jq -r '.params.get'</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+<doc-tab id="response">
+<template #title>Response</template>
+<p>You can, of course, mix and match parameters.</p>
+<div class="codeblock-wrapper"><doc-codeblock line-numbers>
+<pre class="language-json"><code v-pre class="language-json">[
+  {
+    &quot;key&quot;: &quot;foo&quot;,
+    &quot;value&quot;: &quot;true&quot;
+  },
+  {
+    &quot;key&quot;: &quot;bar&quot;,
+    &quot;value&quot;: &quot;true&quot;
+  },
+  {
+    &quot;key&quot;: &quot;baz&quot;,
+    &quot;value&quot;: [
+      &quot;one&quot;,
+      &quot;two&quot;
+    ]
+  },
+  {
+    &quot;key&quot;: &quot;merp&quot;,
+    &quot;value&quot;: &quot;flakes&quot;
+  }
+]</code></pre>
+</doc-codeblock></div>
+</doc-tab>
+</doc-tabs>
+<doc-anchor-target id="nginx-directive">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#nginx-directive">#</doc-anchor-trigger>
+        <span>Nginx Directive</span>
+    </h2>
+</doc-anchor-target>
+<p>This is the directive responsible for this endpoint&#x27;s behaviour. You can read the entirety of the configuration <a href="https://github.com/wilhelm-murdoch/chamber/blob/main/config/openresty/conf.d/chamber.conf">here</a>.</p>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-bash"><code v-pre class="language-bash">$ curl -s http://localhost:8000/echo --data 'Hello, world!' | jq -r '.body'
-Hello, world!</code></pre>
+<div class="codeblock-title">config/openresty/conf.d/chamber.conf</div>
+<pre class="language-none"><code v-pre class="language-none">location = /echo {
+  default_type application/json;
+
+  content_by_lua_block {
+    ngx.req.read_body()
+
+    local function parse_params(params)
+      local parsed = {}
+
+      for k1, v1 in pairs(params) do
+        if type(v1) == &quot;table&quot; then
+          local values = {}
+          for k2, v2 in pairs(v1) do
+            table.insert(values, v2)
+          end
+          table.insert(parsed, string.format('{&quot;key&quot;: &quot;%s&quot;, &quot;value&quot;: [&quot;%s&quot;]}', k1, table.concat(values, '&quot;,&quot;')))
+        else
+          table.insert(parsed, string.format('{&quot;key&quot;: &quot;%s&quot;, &quot;value&quot;: &quot;%s&quot;}', k1, v1))
+        end
+      end
+
+      return '[' .. table.concat(parsed, ',') .. ']'
+    end
+
+    local response = '{&quot;headers&quot;: %s, &quot;params&quot;: { &quot;get&quot;: %s, &quot;post&quot;: %s}, &quot;body&quot;: &quot;%s&quot;}'
+    local headers = {}
+    local body = ngx.req.get_body_data() or ''
+    local get = ngx.req.get_uri_args() or {}
+    local post = ngx.req.get_post_args() or {}
+
+    for k, v in pairs(ngx.req.get_headers()) do
+      v = v:gsub('&quot;', '\\&quot;')
+      table.insert(headers, string.format('{&quot;key&quot;: &quot;%s&quot;, &quot;value&quot;: &quot;%s&quot;}', string.upper(k), v))
+    end
+
+    ngx.say(string.format(response, '[' .. table.concat(headers, ',') .. ']', parse_params(get), parse_params(post), body))
+    ngx.exit(ngx.HTTP_OK)
+  }
+}</code></pre>
 </doc-codeblock></div>
 
 
