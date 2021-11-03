@@ -12,7 +12,7 @@ Demonstrates server responses from the `HTTP/1.1 1xx` series of codes.
 
 > An informational response indicates that the request was received and understood. It is issued on a provisional basis while request processing continues. It alerts the client to wait for a final response. The message consists only of the status line and optional header fields, and is terminated by an empty line. 
 
-[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://shorturl.at/oEMSX)
+[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 
 +++ Command
 ```bash # Respond with JSON:

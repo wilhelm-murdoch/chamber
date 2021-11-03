@@ -6,50 +6,50 @@ label: /code/2xx
 
 ## Demonstration
 
-Demonstrates server responses from the `HTTP/1.1 1xx` series of codes.
+Demonstrates server responses from the `HTTP/1.1 2xx` series of codes.
 
 ### Definition
 
 > This class of status codes indicates the action requested by the client was received, understood, and accepted.
 
-[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://shorturl.at/gtvzL)
+[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 
 +++ Command
 ```bash # Respond with JSON:
-for code in {100,102}; do 
+for code in {200,205}; do 
   curl -s http://localhost:8000/code/$code | jq -r '.'
 done
 ```
 ```bash # Respond with headers:
-for code in {100,102}; do 
+for code in {200,205}; do 
   curl -I http://localhost:8000/code/$code
 done
 ```
 +++ Headers
 ``` #
-HTTP/1.1 100 
-Date: Wed, 03 Nov 2021 04:06:49 GMT
+HTTP/1.1 200 OK
+Date: Wed, 03 Nov 2021 09:28:00 GMT
 Content-Type: application/json
-Content-Length: 154
+Content-Length: 127
 Connection: keep-alive
 
-HTTP/1.1 102 
-Date: Wed, 03 Nov 2021 04:07:03 GMT
+HTTP/1.1 205 
+Date: Wed, 03 Nov 2021 09:28:00 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 194
 Connection: keep-alive
 ```
 +++ JSON
 ```json # Various response bodies:
 {
-  "code": 100,
-  "message": "Continue",
-  "description": "The server has received the request headers, and the client should proceed to send the request body."
+  "code": 200,
+  "message": "OK",
+  "description": "The request is OK (this is the standard response for successful HTTP requests)."
 }
 {
-  "code": 102,
-  "message": "Processing",
-  "description": "A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet."
+  "code": 205,
+  "message": "Reset Content",
+  "description": "The request has been successfully processed, but is not returning any content, and requires that the requester reset the document view."
 }
 ```
 +++ 

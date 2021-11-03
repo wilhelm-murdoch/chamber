@@ -6,50 +6,46 @@ label: /code/???
 
 ## Demonstration
 
-Demonstrates server responses from the `HTTP/1.1 1xx` series of codes.
-
-### Definition
-
 > The following codes are not specified by any standard.
 
-[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://shorturl.at/oqEHQ)
+[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 
 +++ Command
 ```bash # Respond with JSON:
-for code in {100,102}; do 
+for code in {498,420}; do 
   curl -s http://localhost:8000/code/$code | jq -r '.'
 done
 ```
 ```bash # Respond with headers:
-for code in {100,102}; do 
+for code in {498,420}; do 
   curl -I http://localhost:8000/code/$code
 done
 ```
 +++ Headers
 ``` #
-HTTP/1.1 100 
-Date: Wed, 03 Nov 2021 04:06:49 GMT
+HTTP/1.1 498 
+Date: Wed, 03 Nov 2021 09:26:33 GMT
 Content-Type: application/json
-Content-Length: 154
+Content-Length: 147
 Connection: keep-alive
 
-HTTP/1.1 102 
-Date: Wed, 03 Nov 2021 04:07:03 GMT
+HTTP/1.1 420 
+Date: Wed, 03 Nov 2021 09:26:33 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 236
 Connection: keep-alive
 ```
 +++ JSON
 ```json # Various response bodies:
 {
-  "code": 100,
-  "message": "Continue",
-  "description": "The server has received the request headers, and the client should proceed to send the request body."
+  "code": 498,
+  "message": "Invalid Token",
+  "description": "Returned by ArcGIS for Server. Code 498 indicates an expired or otherwise invalid token."
 }
 {
-  "code": 102,
-  "message": "Processing",
-  "description": "A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet."
+  "code": 420,
+  "message": "Enhance Your Calm",
+  "description": "Returned by version 1 of the Twitter Search and Trends API when the client is being rate limited; versions 1.1 and later use the 429 Too Many Requests response code instead."
 }
 ```
 +++ 

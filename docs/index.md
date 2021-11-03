@@ -12,7 +12,9 @@ This project, while feature-complete in it's current state, is still quite new, 
 
 ## Hi, there! :wave: :grimacing:
 
-[Chamber](https://chamber.wilhelm.codes) is a fully-featured echo server that can be used for end-to-end testing of proxies and web-based clients. All components have been written using a vanilla implementation of the [OpenResty](https://openresty.org/en/) web platform. Some of chamber's more advanced functionality is written using inline-Lua code as shown in the following code block.
+[Chamber](https://chamber.wilhelm.codes) is a fully-featured echo server that can be used for end-to-end testing of proxies and web-based clients. All components have been written using a vanilla implementation of the [OpenResty](https://openresty.org/en/) web platform.
+
+Some of chamber's more advanced functionality is written using inline-Lua code as shown in the following code block.
 
 :::code source="../config/openresty/conf.d/chamber.conf" title="GET /latency/degrading" region="/latency/degrading" :::
 
@@ -22,7 +24,7 @@ In it's most basic form, an echo server is one that just spits back whatever a c
 
 ## Oh, I get it. "Echo _Chamber_". :neutral_face:
 
-Yep. That's where the name comes from. :smile:
+Yep. Very clever. :smile:
 
 ## So, Why Would I Use This? :face_with_raised_eyebrow:
 

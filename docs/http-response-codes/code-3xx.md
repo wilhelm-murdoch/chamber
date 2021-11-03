@@ -6,50 +6,35 @@ label: /code/3xx
 
 ## Demonstration
 
-Demonstrates server responses from the `HTTP/1.1 1xx` series of codes.
+Demonstrates server responses from the `HTTP/1.1 3xx` series of codes.
 
 ### Definition
 
 > This class of status code indicates the client must take additional action to complete the request. Many of these status codes are used in URL redirection.
 
-[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://shorturl.at/aklzB)
+[!ref text="From Wikipedia" icon="mortar-board" target="blank"](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes)
 
 +++ Command
 ```bash # Respond with JSON:
-for code in {100,102}; do 
-  curl -s http://localhost:8000/code/$code | jq -r '.'
-done
+curl -s http://localhost:8000/code/300 | jq -r '.'
 ```
 ```bash # Respond with headers:
-for code in {100,102}; do 
-  curl -I http://localhost:8000/code/$code
-done
+curl -I http://localhost:8000/code/300
 ```
 +++ Headers
 ``` #
-HTTP/1.1 100 
-Date: Wed, 03 Nov 2021 04:06:49 GMT
+HTTP/1.1 300 
+Date: Wed, 03 Nov 2021 09:34:53 GMT
 Content-Type: application/json
-Content-Length: 154
-Connection: keep-alive
-
-HTTP/1.1 102 
-Date: Wed, 03 Nov 2021 04:07:03 GMT
-Content-Type: application/json
-Content-Length: 290
+Content-Length: 150
 Connection: keep-alive
 ```
 +++ JSON
 ```json # Various response bodies:
 {
-  "code": 100,
-  "message": "Continue",
-  "description": "The server has received the request headers, and the client should proceed to send the request body."
-}
-{
-  "code": 102,
-  "message": "Processing",
-  "description": "A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet."
+  "code": 300,
+  "message": "Multiple Choices",
+  "description": "A link list. The user can select a link and go to that location. Maximum five addresses."
 }
 ```
 +++ 
