@@ -19,7 +19,7 @@ git_sha=$(git rev-parse --short=8 HEAD)
 docker build --build-arg GIT_SHA="${git_sha}" -t ghcr.io/wilhelm-murdoch/chamber:latest . 
 ```
 
-We pass `$(git rev-parse --short=8 HEAD)` through to the build process using a `--build-arg` to write the release to a file stored within the resulting image. This content of this file is used by the `/up` endpoint.
+We pass `$(git rev-parse --short=8 HEAD)` through to the build process using a `--build-arg` to write the release to a file stored within the resulting image. The content of this file is used by the `/up` endpoint.
 
 :::code source="../../Dockerfile" title="Dockerfile" range="24-25" :::
 
@@ -66,7 +66,7 @@ watch -n 1 -c 'curl -s localhost:8000/my/new/endpoint'
 This repository is configured to use Github Workflows for automated building and pushing of releases. However, if you're a maintainer of this project, you can easily bypass this process.
 
 ```bash # 
-git@github.com:wilhelm-murdoch/chamber.git
+git clone git@github.com:wilhelm-murdoch/chamber.git
 cd chamber/
 echo "${GITHUB_TOKEN}" | docker login ghcr.io -u USERNAME --password-stdin
 git_sha=$(git rev-parse --short=8 HEAD)
