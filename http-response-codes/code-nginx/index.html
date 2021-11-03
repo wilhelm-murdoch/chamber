@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/code/nginx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/code/nginx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes." />
+    <meta name="description" content="The nginx web server software expands the 4xx error space to signal issues with the client's request." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/http-response-codes/code-nginx/">
     <meta property="og:title" content="/code/nginx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
+    <meta property="og:description" content="The nginx web server software expands the 4xx error space to signal issues with the client's request.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/http-response-codes/code-nginx/">
     <meta property="twitter:title" content="/code/nginx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
+    <meta property="twitter:description" content="The nginx web server software expands the 4xx error space to signal issues with the client's request.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689245819971" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689247931267" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689245819971" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689247931267" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689245819971" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689247931267" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -208,15 +208,8 @@
         <span>Demonstration</span>
     </h2>
 </doc-anchor-target>
-<p>Demonstrates server responses from the <code v-pre>HTTP/1.1 1xx</code> series of codes.</p>
-<doc-anchor-target id="definition">
-    <h3>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#definition">#</doc-anchor-trigger>
-        <span>Definition</span>
-    </h3>
-</doc-anchor-target>
 <blockquote>
-<p>An informational response indicates that the request was received and understood. It is issued on a provisional basis while request processing continues. It alerts the client to wait for a final response. The message consists only of the status line and optional header fields, and is terminated by an empty line.</p>
+<p>The nginx web server software expands the 4xx error space to signal issues with the client&#x27;s request.</p>
 </blockquote>
 <p>
 <div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
@@ -227,9 +220,9 @@
         <span class="inline-block font-medium ml-2">From Wikipedia</span>
     </div>
     <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
-        <span>https://shorturl.at/oEMSX</span>
+        <span>https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</span>
     </div>
-    <a href="https://shorturl.at/oEMSX" target="_blank" class="absolute block inset-0"></a>
+    <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank" class="absolute block inset-0"></a>
 </div>
 </p>
 <doc-tabs>
@@ -237,13 +230,13 @@
 <template #title>Command</template>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Respond with JSON:</div>
-<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+<pre class="language-bash"><code v-pre class="language-bash">for code in {495,499}; do 
   curl -s http://localhost:8000/code/$code | jq -r '.'
 done</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+<pre class="language-bash"><code v-pre class="language-bash">for code in {495,499}; do 
   curl -I http://localhost:8000/code/$code
 done</code></pre>
 </doc-codeblock></div>
@@ -251,16 +244,16 @@ done</code></pre>
 <doc-tab id="headers">
 <template #title>Headers</template>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 100 
-Date: Wed, 03 Nov 2021 04:06:49 GMT
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 495 
+Date: Wed, 03 Nov 2021 09:44:42 GMT
 Content-Type: application/json
-Content-Length: 154
+Content-Length: 182
 Connection: keep-alive
 
-HTTP/1.1 102 
-Date: Wed, 03 Nov 2021 04:07:03 GMT
+HTTP/1.1 499 
+Date: Wed, 03 Nov 2021 09:44:42 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 157
 Connection: keep-alive</code></pre>
 </doc-codeblock></div>
 </doc-tab>
@@ -269,14 +262,14 @@ Connection: keep-alive</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Various response bodies:</div>
 <pre class="language-json"><code v-pre class="language-json">{
-  &quot;code&quot;: 100,
-  &quot;message&quot;: &quot;Continue&quot;,
-  &quot;description&quot;: &quot;The server has received the request headers, and the client should proceed to send the request body.&quot;
+  &quot;code&quot;: 495,
+  &quot;message&quot;: &quot;SSL Certificate Error&quot;,
+  &quot;description&quot;: &quot;An expansion of the 400 Bad Request response code, used when the client has provided an invalid client certificate.&quot;
 }
 {
-  &quot;code&quot;: 102,
-  &quot;message&quot;: &quot;Processing&quot;,
-  &quot;description&quot;: &quot;A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet.&quot;
+  &quot;code&quot;: 499,
+  &quot;message&quot;: &quot;Token Required&quot;,
+  &quot;description&quot;: &quot;Returned by ArcGIS for Server. Code 499 indicates that a token is required but was not submitted.&quot;
 }</code></pre>
 </doc-codeblock></div>
 </doc-tab>

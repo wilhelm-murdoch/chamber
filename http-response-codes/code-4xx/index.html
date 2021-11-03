@@ -11,27 +11,27 @@
     <!-- Primary Meta Tags -->
     <title>/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.</title>
     <meta name="title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta name="description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes." />
+    <meta name="description" content="Demonstrates server responses from the HTTP/1.1 4xx series of codes." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chamber.wilhelm.codes/http-response-codes/code-4xx/">
     <meta property="og:title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="og:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
+    <meta property="og:description" content="Demonstrates server responses from the HTTP/1.1 4xx series of codes.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://chamber.wilhelm.codes/http-response-codes/code-4xx/">
     <meta property="twitter:title" content="/code/4xx | A fully-featured OpenResty-based echo server for proxy and HTTP client testing.">
-    <meta property="twitter:description" content="Demonstrates server responses from the HTTP/1.1 1xx series of codes.">
+    <meta property="twitter:description" content="Demonstrates server responses from the HTTP/1.1 4xx series of codes.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/resources/css/retype.css?v=1.10.689245819971" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/resources/css/retype.css?v=1.10.689247931267" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689245819971" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/resources/js/config.js?v=1.10.689247931267" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/resources/js/retype.js?v=1.10" defer data-turbo-track="reload"></script>
-    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689245819971" defer></script>
+    <script id="prism-js" type="text/javascript" src="/resources/js/prism.js?v=1.10.689247931267" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -208,7 +208,7 @@
         <span>Demonstration</span>
     </h2>
 </doc-anchor-target>
-<p>Demonstrates server responses from the <code v-pre>HTTP/1.1 1xx</code> series of codes.</p>
+<p>Demonstrates server responses from the <code v-pre>HTTP/1.1 4xx</code> series of codes.</p>
 <doc-anchor-target id="definition">
     <h3>
         <doc-anchor-trigger class="header-anchor-trigger" to="#definition">#</doc-anchor-trigger>
@@ -227,9 +227,9 @@
         <span class="inline-block font-medium ml-2">From Wikipedia</span>
     </div>
     <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
-        <span>https://shorturl.at/aqCQ8</span>
+        <span>https://en.wikipedia.org/wiki/List_of_HTTP_status_codes</span>
     </div>
-    <a href="https://shorturl.at/aqCQ8" target="_blank" class="absolute block inset-0"></a>
+    <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes" target="_blank" class="absolute block inset-0"></a>
 </div>
 </p>
 <doc-tabs>
@@ -237,13 +237,13 @@
 <template #title>Command</template>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Respond with JSON:</div>
-<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+<pre class="language-bash"><code v-pre class="language-bash">for code in {403,404}; do 
   curl -s http://localhost:8000/code/$code | jq -r '.'
 done</code></pre>
 </doc-codeblock></div>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Respond with headers:</div>
-<pre class="language-bash"><code v-pre class="language-bash">for code in {100,102}; do 
+<pre class="language-bash"><code v-pre class="language-bash">for code in {403,404}; do 
   curl -I http://localhost:8000/code/$code
 done</code></pre>
 </doc-codeblock></div>
@@ -251,16 +251,16 @@ done</code></pre>
 <doc-tab id="headers">
 <template #title>Headers</template>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
-<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 100 
-Date: Wed, 03 Nov 2021 04:06:49 GMT
+<pre class="language-none"><code v-pre class="language-none">HTTP/1.1 403 Forbidden
+Date: Wed, 03 Nov 2021 09:37:21 GMT
 Content-Type: application/json
-Content-Length: 154
+Content-Length: 132
 Connection: keep-alive
 
-HTTP/1.1 102 
-Date: Wed, 03 Nov 2021 04:07:03 GMT
+HTTP/1.1 404 Not Found
+Date: Wed, 03 Nov 2021 09:37:21 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 134
 Connection: keep-alive</code></pre>
 </doc-codeblock></div>
 </doc-tab>
@@ -269,14 +269,14 @@ Connection: keep-alive</code></pre>
 <div class="codeblock-wrapper"><doc-codeblock line-numbers>
 <div class="codeblock-title">Various response bodies:</div>
 <pre class="language-json"><code v-pre class="language-json">{
-  &quot;code&quot;: 100,
-  &quot;message&quot;: &quot;Continue&quot;,
-  &quot;description&quot;: &quot;The server has received the request headers, and the client should proceed to send the request body.&quot;
+  &quot;code&quot;: 403,
+  &quot;message&quot;: &quot;Forbidden&quot;,
+  &quot;description&quot;: &quot;The request was a legal request, but the server is refusing to respond to it.&quot;
 }
 {
-  &quot;code&quot;: 102,
-  &quot;message&quot;: &quot;Processing&quot;,
-  &quot;description&quot;: &quot;A WebDAV request may contain many sub-requests involving file operations, requiring a long time to complete the request. This code indicates that the server has received and is processing the request, but no response is available yet.&quot;
+  &quot;code&quot;: 404,
+  &quot;message&quot;: &quot;Not Found&quot;,
+  &quot;description&quot;: &quot;The requested page could not be found but may be available again in the future.&quot;
 }</code></pre>
 </doc-codeblock></div>
 </doc-tab>
