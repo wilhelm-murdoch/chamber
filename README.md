@@ -92,6 +92,16 @@ These are various general-purpose endpoints that cover a wide range of uses.
 #### Apex / Root
 This is simply the default landing page of the service.
 
+```bash
+$ curl -I http://localhost:8000/
+HTTP/1.1 200 OK
+Date: Thu, 29 Sep 2022 04:04:44 GMT
+Content-Type: text/html
+Connection: keep-alive
+```
+
+Open [http://localhost:8000](http://localhost:8000) in your browser.
+
 #### Basic Auth
 Demonstrates an endpoint which supports [basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). The default username and password are both `chamber` and a succesful attempt will display the landing page.
 
