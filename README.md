@@ -75,7 +75,7 @@ cd12aa0e
 Helm support is coming soon!
 
 ## Endpoints
-What follows is an exhaustive list of supported endpoints and how to interact with them.
+What follows is a list of supported endpoints and how to interact with them.
 
 ### General
 
@@ -209,7 +209,7 @@ Failed transactions:	           0
 Longest transaction:	       16.16
 Shortest transaction:	        1.31
 ```
-
+As you can see above, an increase in active requests leads to slower response times.
 #### Erratic Response Times
 Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between 1 and 10 seconds.
 ```bash
@@ -238,6 +238,30 @@ Connection: keep-alive
 ```
 
 ### Response Sizes
+Endpoints within the `size/` namespace are used to demonstrate how HTTP response bodies of various size can affect client-side performance. Included in this category are 6 different endpoints with increasingly large response bodies containing the word `echo` repeatedly.
+
+Below is the list of endpoints and the number of times `echo` appears in the response body:
+
+```
+Endpoint          "echo" count
+--------          -----------
+size/smallest     150
+size/small        1,500
+size/medium       15,000
+size/large        150,000
+size/larger       1,500,000
+size/largest      15,000,000
+```
+For example:
+```bash
+$ curl -i localhost:8000/size/smallest
+HTTP/1.1 200 OK
+Date: Thu, 29 Sep 2022 03:28:12 GMT
+Content-Type: text/html
+Connection: close
+
+echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo
+```
 ### Streaming
 
 ## Building & Contributing
