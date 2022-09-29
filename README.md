@@ -523,7 +523,7 @@ Event entries contain the following values:
 | ---     | ---                                                                                    |
 | `type`  | The type of event being returned. `default: info`                                      |
 | `id`    | A unique identifier representing the current request id. `default: ngx.var.request_id` |
-| `time`  | A timestamp representing the server's current time. default: `ngx.now()`               |
+| `time`  | A timestamp representing the server's current time. `default: ngx.now()`               |
 
 ## License
 
