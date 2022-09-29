@@ -9,7 +9,16 @@
     - [Helm](#helm)
   - [Endpoints](#endpoints)
     - [General](#general)
-      - [Landing Page](#landing-page)
+      - [Apex / Root](#apex--root)
+      - [Basic Auth](#basic-auth)
+      - [Documentation](#documentation)
+      - [Echo](#echo)
+      - [Hello World!](#hello-world)
+      - [Hostname](#hostname)
+      - [Now](#now)
+      - [Rate Limiting](#rate-limiting)
+      - [Status](#status)
+      - [Up](#up)
     - [HTTP Status Codes](#http-status-codes)
       - [`1xx` Codes](#1xx-codes)
       - [`2xx` Codes](#2xx-codes)
@@ -29,8 +38,6 @@
     - [Streaming](#streaming)
       - [Server-Sent Events (SSE)](#server-sent-events-sse)
       - [Web Sockets](#web-sockets)
-  - [Building & Contributing](#building--contributing)
-  - [Acknowledgements](#acknowledgements)
   - [License](#license)
 
 Chamber is a fully-featured echo server that can be used for end-to-end testing of proxies and web-based clients. All components have been written using a vanilla implementation of the [OpenResty](https://openresty.org/en/) web platform. While most of the endpoints are written using vanilla Nginx directives, some of the more advanced functionality is written using inline-Lua code. This is the primary reason behind choosing OpenResty for this project.
@@ -80,13 +87,210 @@ Helm support is coming soon!
 What follows is a list of supported endpoints and how to interact with them.
 
 ### General
+These are various general-purpose endpoints that cover a wide range of uses.
 
-#### Landing Page
+#### Apex / Root
+This is simply the default landing page of the service.
 
-Request:
+#### Basic Auth
+Demonstrates an endpoint which supports [basic authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication). The default username and password are both `chamber` and a succesful attempt will display the landing page.
+
+An authorised request:
 ```bash
+$ curl -I -u chamber:chamber http://localhost:8000/auth
+HTTP/1.1 200 OK
+Date: Thu, 29 Sep 2022 04:04:44 GMT
+Content-Type: text/html
+Connection: keep-alive
 ```
-Response:
+
+An unauthorised request:
+```bash
+$ curl -I -u herp:derp http://localhost:8000/auth
+HTTP/1.1 401 Unauthorized
+Date: Thu, 29 Sep 2022 04:05:18 GMT
+Content-Type: text/html
+Content-Length: 176
+Connection: keep-alive
+WWW-Authenticate: Basic realm="Enter the Chamber"
+```
+#### Documentation
+This endpoint will redirect you straight to the project's README file ( this one ).
+```bash
+$ curl -LI http://localhost:8000/docs
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 29 Sep 2022 04:06:31 GMT
+Content-Type: text/html
+Content-Length: 166
+Connection: keep-alive
+Location: https://github.com/wilhelm-murdoch/chamber/blob/main/README.md
+```
+#### Echo
+Arguably the most important feature of an echo server is to actually support _echoing_ with the most common types of requests; `GET`, `POST` and the rest. Responds with a JSON object containing the requests `.headers`, `.params.get`, `params.post` and raw `.body` values.
+
+```bash
+$ curl -s --data "email=me@mysite.com&password=***" http://localhost:8000/echo?param=foo&param=bar&merp&flakes=meep | jq -r '.'
+
+{
+  "headers": [
+    {
+      "key": "ACCEPT",
+      "value": "*/*"
+    },
+    {
+      "key": "CONTENT-LENGTH",
+      "value": "32"
+    },
+    {
+      "key": "HOST",
+      "value": "localhost:8000"
+    },
+    {
+      "key": "USER-AGENT",
+      "value": "curl/7.64.1"
+    },
+    {
+      "key": "CONTENT-TYPE",
+      "value": "application/x-www-form-urlencoded"
+    }
+  ],
+  "params": {
+    "get": [
+      {
+        "key": "merp",
+        "value": "true"
+      },
+      {
+        "key": "param",
+        "value": [
+          "foo",
+          "bar"
+        ]
+      },
+      {
+        "key": "flakes",
+        "value": "meep"
+      }
+    ],
+    "post": [
+      {
+        "key": "email",
+        "value": "me@mysite.com"
+      },
+      {
+        "key": "password",
+        "value": "***"
+      }
+    ]
+  },
+  "body": "email=me@mysite.com&password=***"
+}
+```
+#### Hello World!
+Returns a text response for "Hello, world!" in all languages supported by Google Translate.
+```bash
+$ for i in {1..15}; do curl http://localhost:8000/hello-world; done
+ہیلو دنیا!
+Tere, Maailm!
+你好，世界！
+Salute, mondu !
+ሰላም ልዑል!
+Dia duit, a shaoghail!
+Hello, mundo!
+Ciao mondo!
+Salam, dünya!
+Hallo Wereld!
+Lefatše Lumela!
+Mo ki O Ile Aiye!
+Përshendetje Botë!
+Helló Világ!
+Hàlo a Shaoghail!
+```
+#### Hostname
+Returns a JSON response containing the server's hostname.
+```bash
+$ curl -s http://localhost:8000/hostname | jq -r '.'
+{
+  "hostname": "localhost"
+}
+```
+#### Now
+Returns a JSON response containing the server's current time.
+```bash
+$ curl -s http://localhost:8000/now | jq -r '.'
+{
+  "now": 1635174165.878
+}
+```
+#### Rate Limiting
+Demonstrates using an endpoint dedicated to isolated rate limit testing. 
+
+Simulating high traffic to trigger rate limiting rules can be difficult to do manually. Luckily, there are plenty of tools out there to assist. `siege` is one of the more popular options. Installation instructions are a bit out of scope for this document, but there is broad support for it on most operating systems. You can read more about it [here](https://github.com/JoeDog/siege).
+
+Once installed, you should be able to perform the following simulation.
+```bash
+$ siege -c 15 -r 1 --no-parser http://localhost:8000/rate-limit
+** SIEGE 4.1.1
+** Preparing 15 concurrent users for battle.
+The server is now under siege...
+HTTP/1.1 200     0.02 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.02 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 503     0.03 secs:     194 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 503     0.03 secs:     194 bytes ==> GET  /rate-limit
+HTTP/1.1 503     0.03 secs:     194 bytes ==> GET  /rate-limit
+HTTP/1.1 200     0.03 secs:      21 bytes ==> GET  /rate-limit
+HTTP/1.1 503     0.03 secs:     194 bytes ==> GET  /rate-limit
+
+Transactions:		               11 hits
+Availability:		            73.33 %
+Elapsed time:		            0.03 secs
+Data transferred:	            0.00 MB
+Response time:		            0.04 secs
+Transaction rate:	          366.67 trans/sec
+Throughput:		                0.03 MB/sec
+Concurrency:		           14.33
+Successful transactions:          11
+Failed transactions:	           4
+Longest transaction:	        0.03
+Shortest transaction:	        0.02
+```
+You will noticed a few `503` responses in the `siege` results. These would correspond to the following server logs.
+
+```bash # Logs sent to stdout from the server.
+172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] "GET /rate-limit HTTP/1.1" 200 21 "-" "Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1"
+2021/10/25 23:58:22 [error] 8#8: *71 limiting requests, excess: 10.950 by zone "chamber", client: 172.17.0.1, server: _, request: "GET /rate-limit HTTP/1.1", host: "localhost:8000"
+172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] "GET /rate-limit HTTP/1.1" 503 194 "-" "Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1"
+2021/10/25 23:58:22 [error] 8#8: *74 limiting requests, excess: 10.950 by zone "chamber", client: 172.17.0.1, server: _, request: "GET /rate-limit HTTP/1.1", host: "localhost:8000"
+172.17.0.1 - - [25/Oct/2021:23:58:22 +0000] "GET /rate-limit HTTP/1.1" 503 194 "-" "Mozilla/5.0 (apple-x86_64-darwin20.4.0) Siege/4.1.1"
+```
+#### Status
+Returns a live counting of various running server statistics.
+```bash
+$ curl -s http://localhost:8000/status | jq -r '.'
+{
+  "connection": 55,
+  "connection_requests": 1,
+  "connections_active": 4,
+  "connections_reading": 0,
+  "connections_writing": 4,
+  "connections_waiting": 0
+}
+```
+#### Up
+This is an endpoint suitable for health checks. It will return a `200 OK` response as well as the currently-running release of the server.
+```bash
+$ curl http://localhost:8000/up
+cd12aa0e
+```
+The release should correspond to the first 8 characters of the commit SHA associated with the merge into the `main` branch.
 
 ### HTTP Status Codes
 Included is support for all HTTP status codes as covered by this [Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) page. There are a handful of duplicate codes that are not included in favour of more popular ones.
@@ -323,16 +527,6 @@ Event entries contain the following values:
 | `type`  | The type of event being returned. `default: info`                                      |
 | `id`    | A unique identifier representing the current request id. `default: ngx.var.request_id` |
 | `time`  | A timestamp representing the server's current time. `default: ngx.now()`               |
-
-## Building & Contributing
-
-## Acknowledgements
-
-This couldn't be possible without the following projects:
-
- - [jq](https://stedolan.github.io/jq/)
- - [Bashly](https://bashly.dannyb.co/)
- - [readme.so](https://readme.so/)
 
 ## License
 
