@@ -22,6 +22,9 @@
       - [Nginx Codes](#nginx-codes)
       - [Unofficial Codes](#unofficial-codes)
     - [Latency](#latency)
+      - [Degrading Performance](#degrading-performance)
+      - [Erratic Response Times](#erratic-response-times)
+      - [Slow, Slower & Slowest](#slow-slower--slowest)
     - [Response Sizes](#response-sizes)
     - [Streaming](#streaming)
   - [Building & Contributing](#building--contributing)
@@ -152,6 +155,88 @@ Supports: `444`, `494-497` & `499`
 
 Supports: `419-420`, `430`, `450`, `498-499`, `509`, `529-530` & `598-599`
 ### Latency
+Chamber supports testing against various types of latency. You can use `curl` commands to hit these endpoints, but it's recommended to use a simple load generating tool like `siege` to get a better idea of how latency can affect performance.
+
+The following endpoints are located within the `latency/` namespace. 
+#### Degrading Performance
+Demonstrates how response times can increase while a target service is under load. The more active connections, the slower the overall response.
+```bash
+$ curl -i http://localhost:8000/latency/degrading
+HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive
+
+{
+  "elapsed": 1.101
+}
+```
+
+Simulating high traffic can be difficult to do manually. Luckily, there are plenty of tools out there to assist. `siege` is one of the more popular options. Installation instructions are a bit out of scope for this document, but there is broad support for it on most operating systems. You can read more about it [here](https://github.com/JoeDog/siege).
+
+```bash
+$ siege -c 150 -r 1 --no-parser http://localhost:8000/latency/degrading
+** SIEGE 4.1.1
+** Preparing 150 concurrent users for battle.
+The server is now under siege...
+HTTP/1.1 200     1.31 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.31 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.42 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.42 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.72 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.82 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     1.82 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     2.12 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     2.12 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     2.12 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     2.23 secs:      22 bytes ==> GET  /latency/degrading
+HTTP/1.1 200     2.23 secs:      22 bytes ==> GET  /latency/degrading
+... heaps more requests ...
+HTTP/1.1 200    16.16 secs:      23 bytes ==> GET  /latency/degrading
+HTTP/1.1 200    16.16 secs:      23 bytes ==> GET  /latency/degrading
+HTTP/1.1 200    16.16 secs:      23 bytes ==> GET  /latency/degrading
+
+Transactions:		             150 hits
+Availability:		          100.00 %
+Elapsed time:		           16.16 secs
+Data transferred:	            0.00 MB
+Response time:		           11.29 secs
+Transaction rate:	            9.28 trans/sec
+Throughput:		                0.00 MB/sec
+Concurrency:		          104.76
+Successful transactions:         150
+Failed transactions:	           0
+Longest transaction:	       16.16
+Shortest transaction:	        1.31
+```
+
+#### Erratic Response Times
+Demonstrates how response times can be in flux while a target service is behaving erratically. This endpoint will respond between 1 and 10 seconds.
+```bash
+$ curl -i http://localhost:8000/latency/erratic
+HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive
+
+{
+  "elapsed": 6.141
+}
+```
+#### Slow, Slower & Slowest
+Demonstrates a hard-coded response times of `5`, `10` and `20` seconds respectively. This is useful for testing consistently-long-running requests. Use any of the `latency/slow`, `latency/slower` or `latency/slowest` endpoints to simulate slow responses as shown below.
+```bash
+$ curl -i http://localhost:8000/latency/slowest
+HTTP/1.1 200 OK
+Date: Tue, 02 Nov 2021 13:46:10 GMT
+Content-Type: application/json
+Connection: keep-alive
+
+{
+  "elapsed": 20.001
+}
+```
+
 ### Response Sizes
 ### Streaming
 
