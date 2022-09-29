@@ -446,16 +446,6 @@ Connection: keep-alive
 ### Response Sizes
 Endpoints within the `size/` namespace are used to demonstrate how HTTP response bodies of various size can affect client-side performance. Included in this category are 6 different endpoints with increasingly large response bodies containing the word `echo` repeatedly.
 
-Below is the list of endpoints and the number of times `echo` appears in the response body:
-| Endpoint         | "echo" Count | Estimated Size |
-| ---              | ---          | ---            |
-| `size/smallest`  | 150          | ~750B          |
-| `size/small`     | 1,500        | ~7.5KB         |
-| `size/medium`    | 15,000       | ~75KB          |
-| `size/large`     | 150,000      | ~750KB         |
-| `size/larger`    | 1,500,000    | ~7.5MB         |
-| `size/largest`   | 15,000,000   | ~75MB          |
-
 ```bash
 $ curl -i localhost:8000/size/smallest
 HTTP/1.1 200 OK
@@ -465,6 +455,15 @@ Connection: close
 
 echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo
 ```
+Below is the list of endpoints and the number of times `echo` appears in the response body:
+| Endpoint         | "echo" Count | Estimated Size |
+| ---              | ---          | ---            |
+| `size/smallest`  | 150          | ~750B          |
+| `size/small`     | 1,500        | ~7.5KB         |
+| `size/medium`    | 15,000       | ~75KB          |
+| `size/large`     | 150,000      | ~750KB         |
+| `size/larger`    | 1,500,000    | ~7.5MB         |
+| `size/largest`   | 15,000,000   | ~75MB          |
 ### Streaming
 Endpoints within the `streaming/` namespace are used to demonstrate various ways to interact with "streaming" connections.
 
