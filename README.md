@@ -27,6 +27,8 @@
       - [Slow, Slower & Slowest](#slow-slower--slowest)
     - [Response Sizes](#response-sizes)
     - [Streaming](#streaming)
+      - [Server-Sent Events (SSE)](#server-sent-events-sse)
+      - [Web Sockets](#web-sockets)
   - [Building & Contributing](#building--contributing)
   - [Acknowledgements](#acknowledgements)
   - [License](#license)
@@ -243,14 +245,14 @@ Endpoints within the `size/` namespace are used to demonstrate how HTTP response
 Below is the list of endpoints and the number of times `echo` appears in the response body:
 
 ```
-Endpoint          "echo" count
---------          -----------
-size/smallest     150
-size/small        1,500
-size/medium       15,000
-size/large        150,000
-size/larger       1,500,000
-size/largest      15,000,000
+Endpoint          "echo" count    Estimated Size
+-------------     ------------    --------------
+size/smallest     150             ~750B
+size/small        1,500           ~7.5KB
+size/medium       15,000          ~75KB
+size/large        150,000         ~750KB
+size/larger       1,500,000       ~7.5MB
+size/largest      15,000,000      ~75MB
 ```
 For example:
 ```bash
@@ -263,6 +265,64 @@ Connection: close
 echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo echo
 ```
 ### Streaming
+Endpoints within the `streaming/` namespace are used to demonstrate various ways to interact with "streaming" connections.
+
+#### Server-Sent Events (SSE)
+Exposes an endpoint for testing clients used for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events). You can open this endpoint directly in your browser to observe a live stream of events, or use curl from the command line. A resulting stream of events will appear at random intervals.
+
+Use the `-N` flag with `curl` to disable buffering of the request:
+```bash
+$ curl -N http://localhost:8000/streaming/sse
+id: a46c9328a2690b870750daf299ed6645
+event: random
+data: {"message": "wWNvSbwAFVQTygvNmXAkqCK7X2GTbaawJ", "elapsed": 0.000000}
+
+
+id: 89967b354ed3b945d2d70e403f965a48
+event: random
+data: {"message": "X2anNIwhnpEZQy46Pt21kHdKpDDpVJRx5b4K8LXRVx0", "elapsed": 1.004000}
+
+
+id: 28c24b074fe0755f8f021f102a25e9b8
+event: random
+data: {"message": "GglibY3F2vffFPqTfYRfl6", "elapsed": 3.010000}
+```
+If you wish to see the header block:
+```bash
+$ curl -I http://localhost:8000/streaming/sse
+HTTP/1.1 200 OK
+Date: Thu, 29 Sep 2022 03:43:19 GMT
+Content-Type: application/octet-stream
+Connection: keep-alive
+Cache-Control: no-cache
+Connection: keep-alive
+Content-Type: text/event-stream
+Access-Control-Allow-Origin: *
+```
+#### Web Sockets
+Exposes a websocket server endpoint used for echoing back data for testing. This can be used for end-to-end testing of new clients. Hitting this endpoint will yield a stream of events spaced `1` second apart. When it comes to testing websockets within a terminal, I prefer to use [`websocat`](https://github.com/vi/websocat) to echo back messages.
+
+To demonstrate the WS server waiting for a connection:
+```bash
+$ websocat ws://localhost:8000/streaming/ws
+{"type": "info", "id": "206ddc2f424421ffc0515cdf0a29e574", "time": 1664423546.107}
+{"type": "info", "id": "e94104cd549afed3c5477fcac933ea95", "time": 1664423551.11}
+{"type": "info", "id": "fec85e20e6b72f5945090cd56d252f2f", "time": 1664423556.112}
+```
+To demonstrate the server echoing back a message:
+```bash
+$ echo 'Hello, world!' | websocat ws://localhost:8000/streaming/ws
+{"type": "info", "id": "8e0aaa12841cd8b18ce654981e0bedae", "time": 1664423517.169}
+{"type": "message", "Hello, world! "}
+{"type": "info", "id": "8df5849fb7a8af5198e98257c74086e4", "time": 1664423517.169}
+```
+
+Event entries contain the following values:
+| Attribute | Description                                                                          |
+| ---     | ---                                                                                    |
+| `type`  | The type of event being returned. `default: info`                                      |
+| `id`    | A unique identifier representing the current request id. `default: ngx.var.request_id` |
+| `time`  | A timestamp representing the server's current time. `default: ngx.now()`               |
 
 ## Building & Contributing
 
