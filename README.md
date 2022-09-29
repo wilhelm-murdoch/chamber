@@ -447,18 +447,15 @@ Connection: keep-alive
 Endpoints within the `size/` namespace are used to demonstrate how HTTP response bodies of various size can affect client-side performance. Included in this category are 6 different endpoints with increasingly large response bodies containing the word `echo` repeatedly.
 
 Below is the list of endpoints and the number of times `echo` appears in the response body:
+| Endpoint         | "echo" Count | Estimated Size |
+| ---              | ---          | ---            |
+| `size/smallest`  | 150          | ~750B          |
+| `size/small`     | 1,500        | ~7.5KB         |
+| `size/medium`    | 15,000       | ~75KB          |
+| `size/large`     | 150,000      | ~750KB         |
+| `size/larger`    | 1,500,000    | ~7.5MB         |
+| `size/largest`   | 15,000,000   | ~75MB          |
 
-```
-Endpoint          "echo" count    Estimated Size
--------------     ------------    --------------
-size/smallest     150             ~750B
-size/small        1,500           ~7.5KB
-size/medium       15,000          ~75KB
-size/large        150,000         ~750KB
-size/larger       1,500,000       ~7.5MB
-size/largest      15,000,000      ~75MB
-```
-For example:
 ```bash
 $ curl -i localhost:8000/size/smallest
 HTTP/1.1 200 OK
@@ -526,7 +523,7 @@ Event entries contain the following values:
 | ---     | ---                                                                                    |
 | `type`  | The type of event being returned. `default: info`                                      |
 | `id`    | A unique identifier representing the current request id. `default: ngx.var.request_id` |
-| `time`  | A timestamp representing the server's current time. `default: ngx.now()`               |
+| `time`  |                |
 
 ## License
 
