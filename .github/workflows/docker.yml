@@ -6,7 +6,6 @@ on:
     paths: 
       - .github/workflows/**
       - Dockerfile
-      - entrypoint.sh
       - config/**
       - '!sub-project/docs/**'
 
